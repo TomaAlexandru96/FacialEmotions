@@ -13,10 +13,10 @@ def main():
     y = mat['y']
 
     # Create attributes
-    attributes = []
+    attributes = [0]*45
     for i in range(total_attributes):
-        attributes.append(i+1)
-    y = [1,1,2,2,2,2,4,4,4,4,4,4]
+        attributes[i] = i+1
+
     # Parent call to recursive function
     decision_tree_learning(x, attributes, y)
 
@@ -28,7 +28,24 @@ def decision_tree_learning(examples, attributes, binary_targets):
         return TreeNode(majority_value(binary_targets))
     else:
         best_attribute = choose_best_decision_attribute(examples, attributes, binary_targets)
-        # root_attribute = TreeNode()
+        tree = TreeNode(best_attribute)
+        for v in [0,1]:
+            v_examples = []
+            v_binary_targets = []
+            for i in range(0, len(examples)):
+                example = examples[i]
+                if example[best_attribute - 1] == v:
+                    v_examples.append(example)
+                    v_binary_targets.append(binary_targets[i])
+            if len(v_examples) == 0:
+                return TreeNode(majority_value(binary_targets))
+            else:
+                attributes.remove(best_attribute)
+                subtree = decision_tree_learning(v_examples, attributes, v_binary_targets)
+                tree.add_kid(subtree)
+                attributes.append(best_attribute)
+        return tree
+
 
 def same_binary_targets(binary_targets):
     if len(binary_targets) <= 0:
@@ -39,12 +56,13 @@ def same_binary_targets(binary_targets):
             return False
     return True
 
+
 def majority_value(binary_targets):
     return max(set(binary_targets), key=binary_targets.count)
 
 
 def choose_best_decision_attribute(examples, attributes, binary_targets):
-    pass
+    return attributes[0]
 
 
 if __name__ == "__main__":
