@@ -21,13 +21,14 @@ def main():
 
     trees = []
     # Parent call to recursive function
-    for i in range(1, number_of_trees):
+    for i in range(1, number_of_trees + 1):
         # the binary target for index i
         y_tree = list(map(lambda value: value == i if 1 else 0, y))
         trees.append(decision_tree_learning(x, attributes, y_tree))
 
-    for tree in trees:
-        dump_tree(tree)
+    for index, tree in enumerate(trees):
+        dump_tree(index, tree)
+        print()
 
 
 def decision_tree_learning(examples, attributes, binary_targets):
@@ -88,7 +89,7 @@ def choose_best_decision_attribute(examples, attributes, binary_targets):
     max_gain = -1
     index_max = -1
 
-    for attr, index in enumerate(attributes):
+    for index, attr in enumerate(attributes):
         p0 = 0
         n0 = 0
         p1 = 0
@@ -98,7 +99,7 @@ def choose_best_decision_attribute(examples, attributes, binary_targets):
 
         for i in range(0, len(examples)):
             example = examples[i]
-            if example[attr] == 0:
+            if example[attr - 1] == 0:
                 if binary_targets[i] == 1:
                     p0 += 1
                     p += 1
@@ -126,9 +127,27 @@ def choose_best_decision_attribute(examples, attributes, binary_targets):
     return attributes[index_max]
 
 
-def dump_tree(tree):
+def dump_tree(tree_name, tree):
+    print("-------------------------------------------------------------------")
+    print("Tree Name: " + str(tree_name))
     print(tree.to_string())
+    print("-------------------------------------------------------------------")
+
+
+def test_debug():
+    # 1
+    # |-2
+    # |-3
+    # | |-4
+    # |   |-5
+    # |-6
+    tree_test_case = \
+        TreeNode.create_internal("1").add_kid(TreeNode.create_leaf("2")) \
+            .add_kid(TreeNode.create_internal("3").add_kid(TreeNode.create_internal("4").add_kid(TreeNode.create_leaf("5")))) \
+            .add_kid(TreeNode.create_leaf("6"))
+    dump_tree("Test", tree_test_case)
 
 
 if __name__ == "__main__":
     main()
+    # test_debug()

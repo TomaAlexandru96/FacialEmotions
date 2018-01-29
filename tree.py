@@ -9,6 +9,7 @@ class TreeNode:
 
     def add_kid(self, kid):
         self.kids.append(kid)
+        return self
 
     @staticmethod
     def create_leaf(label):
@@ -22,15 +23,31 @@ class TreeNode:
         return self.label is not None
 
     def to_string(self):
-        return self.__to_string__("")
+        return self.__to_string__("", True, False)
 
-    def __to_string__(self, prefix):
+    def __to_string__(self, prefix, is_root, is_last_kid):
+        line = ""
+        if not is_root:
+            line = "-"
+
+        prefix2 = prefix
+        if is_last_kid:
+            prefix2 = prefix[:-1]
+            prefix2 += "|"
+
         if self.is_leaf():
-            return "Leaf(" + str(self.label) + ")"
+            return prefix2 + line + "Leaf(" + str(self.label) + ")"
         else:
-            sb = "Internal(" + str(self.op) + ")\n"
+            sb = prefix2 + line + "Internal(" + str(self.op) + "): " + str(len(self.kids))
 
-            for kid in self.kids:
-                sb += kid.__to_string__(prefix + "|-") + "\n"
+            if not is_root:
+                prefix += " "
+
+            for index, kid in enumerate(self.kids):
+                if index == len(self.kids) - 1:
+                    p = prefix + " "
+                else:
+                    p = prefix + "|"
+                sb += "\n" + kid.__to_string__(p, False, index == len(self.kids) - 1)
 
             return sb
