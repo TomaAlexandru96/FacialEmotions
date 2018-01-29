@@ -1,6 +1,3 @@
-#!/usr/bin/env python
-
-
 class TreeNode:
     def __init__(self, attribute=None, label=None):
         self.label = label   # Leaf node decision

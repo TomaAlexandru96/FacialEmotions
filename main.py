@@ -1,5 +1,3 @@
-#!/usr/bin/env python
-
 import scipy.io as spio
 from tree import TreeNode
 import math
@@ -27,8 +25,7 @@ def main():
         trees.append(decision_tree_learning(x, attributes, y_tree))
 
     for index, tree in enumerate(trees):
-        dump_tree(index, tree)
-        print()
+        dump_tree(index + 1, tree)
 
 
 def decision_tree_learning(examples, attributes, binary_targets):
@@ -78,10 +75,7 @@ def get_entropy(p, n):
     if p == 0 or n == 0:
         return 0
 
-    return 0
-
-    # TODO
-    # return -(p/(p+n)) * math.log(p/(p+n), 2) - (n/(p+n)) * math.log(n/(p+n), 2)
+    return -(p/(p+n)) * math.log(p/(p+n), 2) - (n/(p+n)) * math.log(n/(p+n), 2)
 
 
 # find between 1 and 45

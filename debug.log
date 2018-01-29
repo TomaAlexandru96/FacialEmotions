@@ -1,0 +1,846 @@
+-------------------------------------------------------------------
+Tree Name: 1
+Internal(24): 2
+|-Internal(7): 2
+| |-Internal(4): 2
+| | |-Internal(31): 2
+| | | |-Leaf(False)
+| | | |-Internal(44): 2
+| | |   |-Leaf(False)
+| | |   |-Internal(30): 2
+| | |     |-Leaf(False)
+| | |     |-Leaf(True)
+| | |-Internal(44): 2
+| |   |-Internal(25): 2
+| |   | |-Internal(45): 2
+| |   | | |-Internal(33): 2
+| |   | | | |-Internal(39): 2
+| |   | | | | |-Internal(23): 2
+| |   | | | | | |-Leaf(False)
+| |   | | | | | |-Internal(5): 2
+| |   | | | | |   |-Leaf(False)
+| |   | | | | |   |-Leaf(True)
+| |   | | | | |-Internal(19): 2
+| |   | | | |   |-Leaf(False)
+| |   | | | |   |-Leaf(False)
+| |   | | | |-Internal(8): 2
+| |   | | |   |-Leaf(False)
+| |   | | |   |-Leaf(True)
+| |   | | |-Leaf(False)
+| |   | |-Leaf(False)
+| |   |-Internal(17): 2
+| |     |-Leaf(False)
+| |     |-Internal(36): 2
+| |       |-Internal(5): 2
+| |       | |-Leaf(False)
+| |       | |-Internal(14): 2
+| |       |   |-Leaf(True)
+| |       |   |-Leaf(False)
+| |       |-Leaf(True)
+| |-Internal(4): 2
+|   |-Internal(16): 2
+|   | |-Internal(12): 2
+|   | | |-Internal(2): 2
+|   | | | |-Internal(20): 2
+|   | | | | |-Internal(13): 2
+|   | | | | | |-Internal(17): 2
+|   | | | | | | |-Internal(38): 2
+|   | | | | | | | |-Internal(40): 2
+|   | | | | | | | | |-Leaf(False)
+|   | | | | | | | | |-Leaf(True)
+|   | | | | | | | |-Leaf(True)
+|   | | | | | | |-Leaf(False)
+|   | | | | | |-Internal(34): 2
+|   | | | | |   |-Leaf(True)
+|   | | | | |   |-Leaf(False)
+|   | | | | |-Leaf(False)
+|   | | | |-Leaf(False)
+|   | | |-Leaf(False)
+|   | |-Internal(1): 2
+|   |   |-Leaf(True)
+|   |   |-Leaf(False)
+|   |-Internal(17): 2
+|     |-Internal(16): 2
+|     | |-Internal(30): 2
+|     | | |-Leaf(False)
+|     | | |-Internal(6): 2
+|     | |   |-Leaf(False)
+|     | |   |-Leaf(True)
+|     | |-Internal(2): 2
+|     |   |-Internal(1): 2
+|     |   | |-Leaf(True)
+|     |   | |-Internal(15): 2
+|     |   |   |-Internal(8): 2
+|     |   |   | |-Leaf(True)
+|     |   |   | |-Leaf(False)
+|     |   |   |-Leaf(False)
+|     |   |-Leaf(False)
+|     |-Internal(13): 2
+|       |-Internal(29): 2
+|       | |-Internal(25): 2
+|       | | |-Leaf(True)
+|       | | |-Internal(1): 2
+|       | |   |-Leaf(True)
+|       | |   |-Leaf(False)
+|       | |-Leaf(False)
+|       |-Leaf(False)
+|-Internal(4): 2
+  |-Internal(17): 2
+  | |-Leaf(False)
+  | |-Internal(23): 2
+  |   |-Internal(9): 2
+  |   | |-Internal(12): 2
+  |   | | |-Internal(25): 2
+  |   | | | |-Internal(39): 2
+  |   | | | | |-Internal(33): 2
+  |   | | | | | |-Internal(13): 2
+  |   | | | | | | |-Leaf(True)
+  |   | | | | | | |-Internal(22): 2
+  |   | | | | | |   |-Internal(27): 2
+  |   | | | | | |   | |-Leaf(False)
+  |   | | | | | |   | |-Leaf(True)
+  |   | | | | | |   |-Leaf(True)
+  |   | | | | | |-Leaf(False)
+  |   | | | | |-Leaf(False)
+  |   | | | |-Leaf(False)
+  |   | | |-Leaf(False)
+  |   | |-Leaf(False)
+  |   |-Internal(28): 2
+  |     |-Internal(18): 2
+  |     | |-Leaf(False)
+  |     | |-Leaf(True)
+  |     |-Leaf(True)
+  |-Internal(15): 2
+    |-Internal(9): 2
+    | |-Internal(40): 2
+    | | |-Internal(36): 2
+    | | | |-Leaf(True)
+    | | | |-Internal(45): 2
+    | | |   |-Leaf(True)
+    | | |   |-Leaf(False)
+    | | |-Internal(25): 2
+    | |   |-Leaf(True)
+    | |   |-Internal(22): 2
+    | |     |-Leaf(False)
+    | |     |-Leaf(True)
+    | |-Internal(44): 2
+    |   |-Internal(14): 2
+    |   | |-Leaf(True)
+    |   | |-Internal(27): 2
+    |   |   |-Leaf(False)
+    |   |   |-Leaf(True)
+    |   |-Leaf(False)
+    |-Internal(9): 2
+      |-Internal(20): 2
+      | |-Internal(40): 2
+      | | |-Internal(26): 2
+      | | | |-Leaf(True)
+      | | | |-Leaf(False)
+      | | |-Leaf(False)
+      | |-Leaf(False)
+      |-Leaf(False)
+-------------------------------------------------------------------
+-------------------------------------------------------------------
+Tree Name: 2
+Internal(9): 2
+|-Internal(2): 2
+| |-Internal(12): 2
+| | |-Internal(4): 2
+| | | |-Internal(1): 2
+| | | | |-Internal(28): 2
+| | | | | |-Internal(20): 2
+| | | | | | |-Internal(45): 2
+| | | | | | | |-Internal(31): 2
+| | | | | | | | |-Internal(10): 2
+| | | | | | | | | |-Internal(43): 2
+| | | | | | | | | | |-Internal(32): 2
+| | | | | | | | | | | |-Internal(36): 2
+| | | | | | | | | | | | |-Internal(14): 2
+| | | | | | | | | | | | | |-Internal(13): 2
+| | | | | | | | | | | | | | |-Leaf(False)
+| | | | | | | | | | | | | | |-Internal(41): 2
+| | | | | | | | | | | | | |   |-Leaf(True)
+| | | | | | | | | | | | | |   |-Leaf(False)
+| | | | | | | | | | | | | |-Internal(11): 2
+| | | | | | | | | | | | |   |-Leaf(True)
+| | | | | | | | | | | | |   |-Leaf(False)
+| | | | | | | | | | | | |-Internal(34): 2
+| | | | | | | | | | | |   |-Leaf(True)
+| | | | | | | | | | | |   |-Leaf(False)
+| | | | | | | | | | | |-Internal(6): 2
+| | | | | | | | | | |   |-Leaf(True)
+| | | | | | | | | | |   |-Leaf(False)
+| | | | | | | | | | |-Leaf(True)
+| | | | | | | | | |-Leaf(False)
+| | | | | | | | |-Leaf(False)
+| | | | | | | |-Leaf(False)
+| | | | | | |-Internal(11): 2
+| | | | | |   |-Internal(25): 2
+| | | | | |   | |-Internal(44): 2
+| | | | | |   | | |-Leaf(True)
+| | | | | |   | | |-Leaf(False)
+| | | | | |   | |-Internal(19): 2
+| | | | | |   |   |-Leaf(False)
+| | | | | |   |   |-Leaf(True)
+| | | | | |   |-Leaf(True)
+| | | | | |-Leaf(False)
+| | | | |-Internal(44): 2
+| | | |   |-Leaf(False)
+| | | |   |-Internal(37): 2
+| | | |     |-Leaf(False)
+| | | |     |-Leaf(True)
+| | | |-Internal(1): 2
+| | |   |-Internal(13): 2
+| | |   | |-Internal(8): 2
+| | |   | | |-Internal(34): 2
+| | |   | | | |-Leaf(False)
+| | |   | | | |-Internal(39): 2
+| | |   | | |   |-Leaf(False)
+| | |   | | |   |-Leaf(True)
+| | |   | | |-Internal(6): 2
+| | |   | |   |-Leaf(False)
+| | |   | |   |-Internal(45): 2
+| | |   | |     |-Internal(30): 2
+| | |   | |     | |-Leaf(True)
+| | |   | |     | |-Leaf(False)
+| | |   | |     |-Leaf(False)
+| | |   | |-Internal(40): 2
+| | |   |   |-Internal(15): 2
+| | |   |   | |-Leaf(False)
+| | |   |   | |-Internal(7): 2
+| | |   |   |   |-Leaf(False)
+| | |   |   |   |-Leaf(True)
+| | |   |   |-Leaf(True)
+| | |   |-Leaf(False)
+| | |-Internal(31): 2
+| |   |-Leaf(False)
+| |   |-Internal(17): 2
+| |     |-Leaf(False)
+| |     |-Internal(7): 2
+| |       |-Leaf(False)
+| |       |-Leaf(True)
+| |-Leaf(False)
+|-Internal(25): 2
+  |-Internal(4): 2
+  | |-Internal(2): 2
+  | | |-Internal(6): 2
+  | | | |-Internal(23): 2
+  | | | | |-Internal(39): 2
+  | | | | | |-Internal(37): 2
+  | | | | | | |-Leaf(True)
+  | | | | | | |-Internal(29): 2
+  | | | | | |   |-Leaf(True)
+  | | | | | |   |-Internal(10): 2
+  | | | | | |     |-Leaf(True)
+  | | | | | |     |-Leaf(False)
+  | | | | | |-Internal(17): 2
+  | | | | |   |-Internal(38): 2
+  | | | | |   | |-Leaf(True)
+  | | | | |   | |-Leaf(False)
+  | | | | |   |-Leaf(True)
+  | | | | |-Internal(27): 2
+  | | | |   |-Leaf(True)
+  | | | |   |-Internal(8): 2
+  | | | |     |-Leaf(False)
+  | | | |     |-Leaf(True)
+  | | | |-Internal(12): 2
+  | | |   |-Internal(38): 2
+  | | |   | |-Leaf(True)
+  | | |   | |-Internal(14): 2
+  | | |   |   |-Leaf(False)
+  | | |   |   |-Leaf(True)
+  | | |   |-Internal(18): 2
+  | | |     |-Leaf(False)
+  | | |     |-Leaf(True)
+  | | |-Internal(32): 2
+  | |   |-Internal(40): 2
+  | |   | |-Internal(42): 2
+  | |   | | |-Internal(15): 2
+  | |   | | | |-Internal(6): 2
+  | |   | | | | |-Leaf(False)
+  | |   | | | | |-Internal(36): 2
+  | |   | | | |   |-Leaf(False)
+  | |   | | | |   |-Leaf(True)
+  | |   | | | |-Leaf(True)
+  | |   | | |-Leaf(True)
+  | |   | |-Leaf(True)
+  | |   |-Leaf(True)
+  | |-Internal(12): 2
+  |   |-Internal(1): 2
+  |   | |-Internal(7): 2
+  |   | | |-Internal(30): 2
+  |   | | | |-Internal(5): 2
+  |   | | | | |-Leaf(True)
+  |   | | | | |-Internal(44): 2
+  |   | | | |   |-Leaf(True)
+  |   | | | |   |-Leaf(False)
+  |   | | | |-Internal(28): 2
+  |   | | |   |-Leaf(True)
+  |   | | |   |-Leaf(False)
+  |   | | |-Internal(45): 2
+  |   | |   |-Leaf(False)
+  |   | |   |-Leaf(True)
+  |   | |-Internal(38): 2
+  |   |   |-Leaf(False)
+  |   |   |-Leaf(True)
+  |   |-Leaf(False)
+  |-Internal(12): 2
+    |-Internal(5): 2
+    | |-Internal(4): 2
+    | | |-Internal(10): 2
+    | | | |-Internal(17): 2
+    | | | | |-Internal(34): 2
+    | | | | | |-Leaf(False)
+    | | | | | |-Leaf(True)
+    | | | | |-Leaf(True)
+    | | | |-Leaf(True)
+    | | |-Internal(20): 2
+    | |   |-Internal(16): 2
+    | |   | |-Leaf(True)
+    | |   | |-Leaf(False)
+    | |   |-Leaf(False)
+    | |-Leaf(False)
+    |-Leaf(False)
+-------------------------------------------------------------------
+-------------------------------------------------------------------
+Tree Name: 3
+Internal(20): 2
+|-Internal(25): 2
+| |-Internal(17): 2
+| | |-Internal(4): 2
+| | | |-Leaf(False)
+| | | |-Internal(24): 2
+| | |   |-Internal(45): 2
+| | |   | |-Internal(6): 2
+| | |   | | |-Internal(2): 2
+| | |   | | | |-Internal(15): 2
+| | |   | | | | |-Leaf(True)
+| | |   | | | | |-Leaf(False)
+| | |   | | | |-Leaf(False)
+| | |   | | |-Leaf(False)
+| | |   | |-Leaf(False)
+| | |   |-Leaf(False)
+| | |-Leaf(False)
+| |-Internal(4): 2
+|   |-Internal(5): 2
+|   | |-Leaf(False)
+|   | |-Internal(27): 2
+|   |   |-Internal(26): 2
+|   |   | |-Internal(1): 2
+|   |   | | |-Leaf(False)
+|   |   | | |-Internal(21): 2
+|   |   | |   |-Internal(13): 2
+|   |   | |   | |-Internal(34): 2
+|   |   | |   | | |-Internal(38): 2
+|   |   | |   | | | |-Leaf(False)
+|   |   | |   | | | |-Internal(22): 2
+|   |   | |   | | |   |-Leaf(True)
+|   |   | |   | | |   |-Leaf(False)
+|   |   | |   | | |-Leaf(True)
+|   |   | |   | |-Leaf(True)
+|   |   | |   |-Leaf(True)
+|   |   | |-Leaf(False)
+|   |   |-Leaf(False)
+|   |-Internal(2): 2
+|     |-Internal(13): 2
+|     | |-Leaf(False)
+|     | |-Internal(11): 2
+|     |   |-Internal(9): 2
+|     |   | |-Leaf(False)
+|     |   | |-Leaf(True)
+|     |   |-Leaf(True)
+|     |-Internal(27): 2
+|       |-Internal(43): 2
+|       | |-Internal(8): 2
+|       | | |-Leaf(True)
+|       | | |-Leaf(False)
+|       | |-Leaf(False)
+|       |-Leaf(False)
+|-Internal(1): 2
+  |-Internal(5): 2
+  | |-Internal(4): 2
+  | | |-Leaf(False)
+  | | |-Internal(2): 2
+  | |   |-Internal(27): 2
+  | |   | |-Leaf(False)
+  | |   | |-Leaf(True)
+  | |   |-Leaf(True)
+  | |-Internal(4): 2
+  |   |-Internal(33): 2
+  |   | |-Internal(11): 2
+  |   | | |-Leaf(False)
+  |   | | |-Leaf(True)
+  |   | |-Internal(16): 2
+  |   |   |-Internal(32): 2
+  |   |   | |-Leaf(False)
+  |   |   | |-Leaf(True)
+  |   |   |-Leaf(True)
+  |   |-Internal(23): 2
+  |     |-Internal(7): 2
+  |     | |-Leaf(True)
+  |     | |-Leaf(False)
+  |     |-Internal(41): 2
+  |       |-Leaf(False)
+  |       |-Leaf(True)
+  |-Internal(27): 2
+    |-Internal(26): 2
+    | |-Internal(2): 2
+    | | |-Internal(25): 2
+    | | | |-Internal(21): 2
+    | | | | |-Leaf(False)
+    | | | | |-Leaf(True)
+    | | | |-Internal(39): 2
+    | | |   |-Internal(8): 2
+    | | |   | |-Leaf(True)
+    | | |   | |-Internal(28): 2
+    | | |   |   |-Leaf(False)
+    | | |   |   |-Leaf(True)
+    | | |   |-Internal(12): 2
+    | | |     |-Leaf(False)
+    | | |     |-Leaf(True)
+    | | |-Leaf(True)
+    | |-Internal(15): 2
+    |   |-Internal(40): 2
+    |   | |-Leaf(False)
+    |   | |-Internal(29): 2
+    |   |   |-Leaf(True)
+    |   |   |-Leaf(False)
+    |   |-Internal(14): 2
+    |     |-Leaf(True)
+    |     |-Leaf(False)
+    |-Internal(24): 2
+      |-Internal(30): 2
+      | |-Internal(34): 2
+      | | |-Internal(15): 2
+      | | | |-Internal(16): 2
+      | | | | |-Internal(4): 2
+      | | | | | |-Leaf(False)
+      | | | | | |-Internal(43): 2
+      | | | | |   |-Leaf(True)
+      | | | | |   |-Leaf(False)
+      | | | | |-Internal(35): 2
+      | | | |   |-Leaf(True)
+      | | | |   |-Internal(22): 2
+      | | | |     |-Leaf(True)
+      | | | |     |-Leaf(False)
+      | | | |-Leaf(True)
+      | | |-Leaf(False)
+      | |-Leaf(False)
+      |-Leaf(False)
+-------------------------------------------------------------------
+-------------------------------------------------------------------
+Tree Name: 4
+Internal(12): 2
+|-Internal(6): 2
+| |-Internal(1): 2
+| | |-Internal(37): 2
+| | | |-Internal(40): 2
+| | | | |-Leaf(False)
+| | | | |-Internal(19): 2
+| | | |   |-Leaf(False)
+| | | |   |-Internal(31): 2
+| | | |     |-Leaf(False)
+| | | |     |-Leaf(True)
+| | | |-Internal(29): 2
+| | |   |-Leaf(False)
+| | |   |-Internal(10): 2
+| | |     |-Leaf(False)
+| | |     |-Internal(3): 2
+| | |       |-Leaf(True)
+| | |       |-Leaf(False)
+| | |-Leaf(False)
+| |-Internal(17): 2
+|   |-Internal(2): 2
+|   | |-Internal(27): 2
+|   | | |-Internal(34): 2
+|   | | | |-Internal(20): 2
+|   | | | | |-Internal(24): 2
+|   | | | | | |-Internal(25): 2
+|   | | | | | | |-Internal(10): 2
+|   | | | | | | | |-Internal(7): 2
+|   | | | | | | | | |-Leaf(True)
+|   | | | | | | | | |-Leaf(False)
+|   | | | | | | | |-Leaf(False)
+|   | | | | | | |-Internal(29): 2
+|   | | | | | |   |-Leaf(True)
+|   | | | | | |   |-Leaf(False)
+|   | | | | | |-Leaf(False)
+|   | | | | |-Internal(36): 2
+|   | | | |   |-Leaf(False)
+|   | | | |   |-Leaf(True)
+|   | | | |-Leaf(True)
+|   | | |-Leaf(False)
+|   | |-Internal(32): 2
+|   |   |-Leaf(False)
+|   |   |-Internal(18): 2
+|   |     |-Leaf(True)
+|   |     |-Leaf(False)
+|   |-Internal(38): 2
+|     |-Leaf(False)
+|     |-Internal(45): 2
+|       |-Internal(9): 2
+|       | |-Leaf(True)
+|       | |-Leaf(False)
+|       |-Leaf(False)
+|-Internal(6): 2
+  |-Internal(1): 2
+  | |-Internal(17): 2
+  | | |-Internal(22): 2
+  | | | |-Internal(5): 2
+  | | | | |-Internal(25): 2
+  | | | | | |-Internal(9): 2
+  | | | | | | |-Internal(23): 2
+  | | | | | | | |-Internal(30): 2
+  | | | | | | | | |-Leaf(True)
+  | | | | | | | | |-Leaf(False)
+  | | | | | | | |-Leaf(False)
+  | | | | | | |-Leaf(False)
+  | | | | | |-Internal(7): 2
+  | | | | |   |-Leaf(True)
+  | | | | |   |-Internal(38): 2
+  | | | | |     |-Leaf(False)
+  | | | | |     |-Leaf(True)
+  | | | | |-Internal(21): 2
+  | | | |   |-Leaf(False)
+  | | | |   |-Leaf(True)
+  | | | |-Leaf(True)
+  | | |-Internal(32): 2
+  | |   |-Leaf(False)
+  | |   |-Internal(25): 2
+  | |     |-Leaf(False)
+  | |     |-Leaf(True)
+  | |-Internal(33): 2
+  |   |-Leaf(False)
+  |   |-Internal(44): 2
+  |     |-Leaf(True)
+  |     |-Leaf(False)
+  |-Internal(25): 2
+    |-Internal(37): 2
+    | |-Internal(4): 2
+    | | |-Internal(39): 2
+    | | | |-Leaf(True)
+    | | | |-Internal(18): 2
+    | | |   |-Leaf(True)
+    | | |   |-Leaf(False)
+    | | |-Internal(11): 2
+    | |   |-Internal(19): 2
+    | |   | |-Leaf(True)
+    | |   | |-Leaf(False)
+    | |   |-Leaf(False)
+    | |-Internal(21): 2
+    |   |-Leaf(False)
+    |   |-Leaf(True)
+    |-Internal(1): 2
+      |-Leaf(True)
+      |-Internal(2): 2
+        |-Leaf(True)
+        |-Leaf(False)
+-------------------------------------------------------------------
+-------------------------------------------------------------------
+Tree Name: 5
+Internal(25): 2
+|-Internal(9): 2
+| |-Internal(24): 2
+| | |-Internal(17): 2
+| | | |-Internal(15): 2
+| | | | |-Internal(4): 2
+| | | | | |-Internal(19): 2
+| | | | | | |-Leaf(False)
+| | | | | | |-Leaf(True)
+| | | | | |-Internal(1): 2
+| | | | |   |-Leaf(False)
+| | | | |   |-Internal(45): 2
+| | | | |     |-Internal(16): 2
+| | | | |     | |-Leaf(False)
+| | | | |     | |-Leaf(True)
+| | | | |     |-Leaf(True)
+| | | | |-Internal(6): 2
+| | | |   |-Internal(20): 2
+| | | |   | |-Leaf(True)
+| | | |   | |-Leaf(False)
+| | | |   |-Internal(28): 2
+| | | |     |-Leaf(False)
+| | | |     |-Leaf(True)
+| | | |-Internal(7): 2
+| | |   |-Internal(14): 2
+| | |   | |-Internal(8): 2
+| | |   | | |-Internal(20): 2
+| | |   | | | |-Internal(44): 2
+| | |   | | | | |-Internal(12): 2
+| | |   | | | | | |-Internal(5): 2
+| | |   | | | | | | |-Internal(39): 2
+| | |   | | | | | | | |-Leaf(True)
+| | |   | | | | | | | |-Internal(1): 2
+| | |   | | | | | | |   |-Leaf(True)
+| | |   | | | | | | |   |-Internal(13): 2
+| | |   | | | | | | |     |-Leaf(False)
+| | |   | | | | | | |     |-Leaf(True)
+| | |   | | | | | | |-Leaf(False)
+| | |   | | | | | |-Internal(4): 2
+| | |   | | | | |   |-Leaf(False)
+| | |   | | | | |   |-Leaf(True)
+| | |   | | | | |-Leaf(False)
+| | |   | | | |-Internal(33): 2
+| | |   | | |   |-Internal(30): 2
+| | |   | | |   | |-Leaf(False)
+| | |   | | |   | |-Internal(15): 2
+| | |   | | |   |   |-Leaf(False)
+| | |   | | |   |   |-Leaf(True)
+| | |   | | |   |-Leaf(True)
+| | |   | | |-Internal(10): 2
+| | |   | |   |-Internal(4): 2
+| | |   | |   | |-Internal(6): 2
+| | |   | |   | | |-Internal(32): 2
+| | |   | |   | | | |-Leaf(True)
+| | |   | |   | | | |-Leaf(False)
+| | |   | |   | | |-Leaf(False)
+| | |   | |   | |-Leaf(False)
+| | |   | |   |-Leaf(True)
+| | |   | |-Internal(37): 2
+| | |   |   |-Leaf(True)
+| | |   |   |-Internal(45): 2
+| | |   |     |-Leaf(False)
+| | |   |     |-Leaf(True)
+| | |   |-Internal(32): 2
+| | |     |-Internal(16): 2
+| | |     | |-Internal(34): 2
+| | |     | | |-Leaf(False)
+| | |     | | |-Internal(38): 2
+| | |     | |   |-Leaf(True)
+| | |     | |   |-Leaf(False)
+| | |     | |-Leaf(True)
+| | |     |-Leaf(True)
+| | |-Internal(15): 2
+| |   |-Internal(4): 2
+| |   | |-Internal(33): 2
+| |   | | |-Internal(26): 2
+| |   | | | |-Internal(44): 2
+| |   | | | | |-Internal(5): 2
+| |   | | | | | |-Internal(19): 2
+| |   | | | | | | |-Internal(39): 2
+| |   | | | | | | | |-Leaf(False)
+| |   | | | | | | | |-Leaf(True)
+| |   | | | | | | |-Internal(28): 2
+| |   | | | | | |   |-Leaf(True)
+| |   | | | | | |   |-Leaf(False)
+| |   | | | | | |-Leaf(False)
+| |   | | | | |-Leaf(True)
+| |   | | | |-Leaf(False)
+| |   | | |-Internal(12): 2
+| |   | |   |-Leaf(True)
+| |   | |   |-Leaf(False)
+| |   | |-Leaf(False)
+| |   |-Internal(45): 2
+| |     |-Internal(40): 2
+| |     | |-Leaf(False)
+| |     | |-Leaf(True)
+| |     |-Internal(22): 2
+| |       |-Leaf(True)
+| |       |-Leaf(False)
+| |-Internal(15): 2
+|   |-Internal(36): 2
+|   | |-Internal(14): 2
+|   | | |-Leaf(False)
+|   | | |-Internal(4): 2
+|   | |   |-Leaf(False)
+|   | |   |-Internal(21): 2
+|   | |     |-Leaf(True)
+|   | |     |-Leaf(False)
+|   | |-Internal(34): 2
+|   |   |-Internal(23): 2
+|   |   | |-Leaf(False)
+|   |   | |-Internal(24): 2
+|   |   |   |-Leaf(True)
+|   |   |   |-Leaf(False)
+|   |   |-Leaf(True)
+|   |-Internal(17): 2
+|     |-Leaf(False)
+|     |-Internal(1): 2
+|       |-Internal(45): 2
+|       | |-Leaf(False)
+|       | |-Internal(24): 2
+|       |   |-Leaf(True)
+|       |   |-Leaf(False)
+|       |-Internal(4): 2
+|         |-Leaf(False)
+|         |-Internal(20): 2
+|           |-Leaf(True)
+|           |-Leaf(False)
+|-Internal(17): 2
+  |-Internal(3): 2
+  | |-Internal(21): 2
+  | | |-Leaf(False)
+  | | |-Internal(9): 2
+  | |   |-Leaf(False)
+  | |   |-Internal(11): 2
+  | |     |-Leaf(False)
+  | |     |-Leaf(True)
+  | |-Internal(44): 2
+  |   |-Internal(45): 2
+  |   | |-Leaf(False)
+  |   | |-Internal(2): 2
+  |   |   |-Internal(27): 2
+  |   |   | |-Leaf(True)
+  |   |   | |-Leaf(False)
+  |   |   |-Leaf(False)
+  |   |-Leaf(True)
+  |-Internal(15): 2
+    |-Internal(14): 2
+    | |-Internal(38): 2
+    | | |-Internal(8): 2
+    | | | |-Leaf(False)
+    | | | |-Internal(29): 2
+    | | |   |-Leaf(False)
+    | | |   |-Leaf(True)
+    | | |-Internal(35): 2
+    | |   |-Leaf(False)
+    | |   |-Leaf(True)
+    | |-Internal(45): 2
+    |   |-Leaf(False)
+    |   |-Internal(6): 2
+    |     |-Leaf(True)
+    |     |-Leaf(False)
+    |-Internal(20): 2
+      |-Internal(43): 2
+      | |-Internal(1): 2
+      | | |-Internal(21): 2
+      | | | |-Leaf(False)
+      | | | |-Leaf(True)
+      | | |-Leaf(True)
+      | |-Leaf(False)
+      |-Internal(31): 2
+        |-Leaf(False)
+        |-Leaf(True)
+-------------------------------------------------------------------
+-------------------------------------------------------------------
+Tree Name: 6
+Internal(2): 2
+|-Internal(1): 2
+| |-Internal(27): 2
+| | |-Internal(39): 2
+| | | |-Leaf(False)
+| | | |-Internal(5): 2
+| | |   |-Leaf(False)
+| | |   |-Internal(10): 2
+| | |     |-Leaf(True)
+| | |     |-Leaf(False)
+| | |-Internal(25): 2
+| |   |-Leaf(False)
+| |   |-Internal(6): 2
+| |     |-Internal(45): 2
+| |     | |-Internal(12): 2
+| |     | | |-Leaf(False)
+| |     | | |-Internal(20): 2
+| |     | |   |-Leaf(False)
+| |     | |   |-Leaf(True)
+| |     | |-Internal(26): 2
+| |     |   |-Leaf(True)
+| |     |   |-Leaf(False)
+| |     |-Leaf(False)
+| |-Internal(5): 2
+|   |-Internal(17): 2
+|   | |-Internal(27): 2
+|   | | |-Internal(30): 2
+|   | | | |-Leaf(False)
+|   | | | |-Internal(37): 2
+|   | | |   |-Internal(41): 2
+|   | | |   | |-Leaf(False)
+|   | | |   | |-Internal(13): 2
+|   | | |   |   |-Leaf(True)
+|   | | |   |   |-Leaf(False)
+|   | | |   |-Leaf(True)
+|   | | |-Internal(7): 2
+|   | |   |-Internal(12): 2
+|   | |   | |-Internal(25): 2
+|   | |   | | |-Leaf(False)
+|   | |   | | |-Leaf(True)
+|   | |   | |-Leaf(False)
+|   | |   |-Leaf(False)
+|   | |-Leaf(False)
+|   |-Internal(4): 2
+|     |-Internal(16): 2
+|     | |-Internal(27): 2
+|     | | |-Internal(26): 2
+|     | | | |-Internal(24): 2
+|     | | | | |-Leaf(False)
+|     | | | | |-Leaf(True)
+|     | | | |-Leaf(True)
+|     | | |-Leaf(True)
+|     | |-Leaf(False)
+|     |-Leaf(False)
+|-Internal(27): 2
+  |-Internal(26): 2
+  | |-Internal(20): 2
+  | | |-Internal(25): 2
+  | | | |-Internal(36): 2
+  | | | | |-Leaf(False)
+  | | | | |-Internal(28): 2
+  | | | |   |-Internal(38): 2
+  | | | |   | |-Leaf(True)
+  | | | |   | |-Leaf(False)
+  | | | |   |-Leaf(False)
+  | | | |-Internal(35): 2
+  | | |   |-Internal(12): 2
+  | | |   | |-Internal(16): 2
+  | | |   | | |-Internal(4): 2
+  | | |   | | | |-Internal(40): 2
+  | | |   | | | | |-Leaf(True)
+  | | |   | | | | |-Internal(19): 2
+  | | |   | | | |   |-Leaf(True)
+  | | |   | | | |   |-Leaf(False)
+  | | |   | | | |-Leaf(False)
+  | | |   | | |-Internal(45): 2
+  | | |   | |   |-Leaf(False)
+  | | |   | |   |-Leaf(True)
+  | | |   | |-Internal(11): 2
+  | | |   |   |-Leaf(False)
+  | | |   |   |-Internal(8): 2
+  | | |   |     |-Leaf(True)
+  | | |   |     |-Leaf(False)
+  | | |   |-Leaf(True)
+  | | |-Leaf(False)
+  | |-Internal(17): 2
+  |   |-Internal(12): 2
+  |   | |-Internal(4): 2
+  |   | | |-Internal(23): 2
+  |   | | | |-Leaf(True)
+  |   | | | |-Leaf(False)
+  |   | | |-Internal(42): 2
+  |   | |   |-Leaf(False)
+  |   | |   |-Leaf(True)
+  |   | |-Internal(33): 2
+  |   |   |-Leaf(False)
+  |   |   |-Leaf(True)
+  |   |-Internal(5): 2
+  |     |-Leaf(False)
+  |     |-Internal(25): 2
+  |       |-Leaf(False)
+  |       |-Leaf(True)
+  |-Internal(20): 2
+    |-Internal(25): 2
+    | |-Internal(17): 2
+    | | |-Internal(23): 2
+    | | | |-Leaf(True)
+    | | | |-Leaf(False)
+    | | |-Internal(28): 2
+    | |   |-Leaf(False)
+    | |   |-Internal(3): 2
+    | |     |-Leaf(True)
+    | |     |-Leaf(False)
+    | |-Internal(22): 2
+    |   |-Leaf(True)
+    |   |-Internal(17): 2
+    |     |-Leaf(True)
+    |     |-Leaf(False)
+    |-Internal(17): 2
+      |-Internal(16): 2
+      | |-Internal(9): 2
+      | | |-Leaf(True)
+      | | |-Leaf(False)
+      | |-Internal(34): 2
+      |   |-Leaf(False)
+      |   |-Internal(1): 2
+      |     |-Leaf(False)
+      |     |-Leaf(True)
+      |-Leaf(False)
+-------------------------------------------------------------------
