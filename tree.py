@@ -19,6 +19,12 @@ class TreeNode:
     def is_leaf(self):
         return self.label is not None
 
+    def parse_tree(self, data):
+        if self.is_leaf():
+            return self.label
+        else:
+            return self.kids[data[self.op - 1]].parse_tree(data)
+
     def to_string(self):
         return self.__to_string__("", True, False)
 

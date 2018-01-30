@@ -4,11 +4,13 @@ import math
 
 
 def main():
+    clean_data = 'Data/cleandata_students.mat'
+    noisy_data = 'Data/noisydata_students.mat'
     total_attributes = 45
     number_of_trees = 6
 
     # Extract data from the file
-    mat = spio.loadmat('Data/cleandata_students.mat', squeeze_me=True)
+    mat = spio.loadmat(clean_data, squeeze_me=True)
     x = list(mat['x'])
     y = list(mat['y'])
 
@@ -24,8 +26,36 @@ def main():
         y_tree = list(map(lambda value: value == i if 1 else 0, y))
         trees.append(decision_tree_learning(x, attributes, y_tree))
 
-    for index, tree in enumerate(trees):
-        dump_tree(index + 1, tree)
+    # analyse_data(number_of_trees, x, y)
+    robust_validation(number_of_trees, trees, x, y)
+
+
+def analyse_data(number_of_trees, x, y):
+    emotions_count = [0] * 6
+    for i in range(len(x)):
+        emotions_count[y[i] - 1] += 1
+    print(str(emotions_count))
+
+
+def robust_validation(number_of_trees, trees, x, y):
+    trees_FP = [0] * number_of_trees
+    trees_FN = [0] * number_of_trees
+    for i in range(len(x)):
+        for t in range(number_of_trees + 1):
+            actual = trees[t - 1].parse_tree(x[i])
+            if y[i] == t and not actual:
+                # print("Failed FN: " + str(x[i]))
+                # print("For emotion: " + str(y[i]))
+                trees_FN[t - 1] += 1
+            elif y[i] != t and actual:
+                # print("Failed FP: " + str(x[i]))
+                # print("For emotion: " + str(y[i]))
+                trees_FP[t - 1] += 1
+
+    print("FN: " + str(trees_FN))
+    print("FP: " + str(trees_FP))
+
+    dump_tree("6", trees[5])
 
 
 def decision_tree_learning(examples, attributes, binary_targets):
