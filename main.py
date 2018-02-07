@@ -3,6 +3,8 @@ from tree import TreeNode
 import math
 import random
 import numpy as np
+import multiprocessing
+from functools import partial
 
 
 def main():
@@ -14,44 +16,50 @@ def main():
     k_folds = 10
     randomise = False
 
+    pool = multiprocessing.Pool(10)
+
     # Extract data from the file
-    mat = spio.loadmat(clean_data, squeeze_me=True)
+    mat = spio.loadmat(noisy_data, squeeze_me=True)
     x = list(mat['x'])
     y = list(mat['y'])
 
     # Create attributes
-    attributes = [0] * total_attributes
-    for i in range(total_attributes):
-        attributes[i] = i + 1
-    perc_acc = [0] * k_folds
-    # k-fold cross-validation
-    for i in range(k_folds):
-        test_data_input = []
-        test_data_output = []
-        traing_data_input = []
-        traing_data_output = []
-        validation_data_input = []
-        validation_data_output = []
-        for j in range(len(x)):
-            if (j % k_folds == i):
-                test_data_input.append(x[j])
-                test_data_output.append(y[j])
-            elif (j % k_folds == (i+1) % k_folds):
-                validation_data_input.append(x[j])
-                validation_data_output.append(y[j])
-            else:
-                traing_data_input.append(x[j])
-                traing_data_output.append(y[j])
+    attributes = list(range(1,46))
+    random.shuffle(attributes)
 
-
-        tree_priority = [0] * number_of_trees
-        if not randomise:
-            unvalidated_trees = train_trees(number_of_trees, attributes, traing_data_input, traing_data_output)
-            tree_priority = get_tree_priority(unvalidated_trees, validation_data_input, validation_data_output)
-        trees = train_trees(number_of_trees, attributes, traing_data_input + validation_data_input, traing_data_output + validation_data_output)
-        predictions = test_trees(trees, test_data_input, tree_priority, randomise)
-        perc_acc[i] = evaluate_results(predictions, test_data_output)
+    train = partial(train_validate, x=x, y=y, number_of_trees=number_of_trees,
+        attributes=attributes, k_folds=k_folds,randomise=randomise);
+    perc_acc = pool.map(train, range(k_folds))
+    perc_acc.sort()
+    print(perc_acc)
     print(np.mean(perc_acc))
+
+def train_validate(i, x, y, number_of_trees, attributes, k_folds, randomise):
+    test_data_input = []
+    test_data_output = []
+    traing_data_input = []
+    traing_data_output = []
+    validation_data_input = []
+    validation_data_output = []
+    for j in range(len(x)):
+        if (j % k_folds == i):
+            test_data_input.append(x[j])
+            test_data_output.append(y[j])
+        elif (j % k_folds == (i+1) % k_folds):
+            validation_data_input.append(x[j])
+            validation_data_output.append(y[j])
+        else:
+            traing_data_input.append(x[j])
+            traing_data_output.append(y[j])
+
+    tree_priority = [0] * number_of_trees
+    if not randomise:
+        unvalidated_trees = train_trees(number_of_trees, attributes, traing_data_input, traing_data_output)
+        tree_priority = get_tree_priority(unvalidated_trees, validation_data_input, validation_data_output)
+    trees = train_trees(number_of_trees, attributes, traing_data_input + validation_data_input, traing_data_output + validation_data_output)
+    predictions = test_trees(trees, test_data_input, tree_priority, randomise)
+    return evaluate_results(predictions, test_data_output)
+
 def robust_validation(number_of_trees, trees, x, y):
     trees_FP = [0] * number_of_trees
     trees_FN = [0] * number_of_trees
