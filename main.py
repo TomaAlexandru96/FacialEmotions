@@ -41,16 +41,16 @@ def robust_validation(number_of_trees, trees, x, y):
     trees_FP = [0] * number_of_trees
     trees_FN = [0] * number_of_trees
     for i in range(len(x)):
-        for t in range(number_of_trees + 1):
-            actual = trees[t - 1].parse_tree(x[i])
-            if y[i] == t and not actual:
+        for t in range(number_of_trees):
+            actual = trees[t].parse_tree(x[i])
+            if y[i] == t+1 and not actual:
                 # print("Failed FN: " + str(x[i]))
                 # print("For emotion: " + str(y[i]))
-                trees_FN[t - 1] += 1
-            elif y[i] != t and actual:
+                trees_FN[t] += 1
+            elif y[i] != t+1 and actual:
                 # print("Failed FP: " + str(x[i]))
                 # print("For emotion: " + str(y[i]))
-                trees_FP[t - 1] += 1
+                trees_FP[t] += 1
 
     print("FN: " + str(trees_FN))
     print("FP: " + str(trees_FP))
