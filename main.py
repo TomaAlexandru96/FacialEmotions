@@ -19,15 +19,16 @@ def main():
     for i in range(total_attributes):
         attributes[i] = i + 1
 
-    trees = []
-    # Parent call to recursive function
-    for i in range(1, number_of_trees + 1):
-        # the binary target for index i
-        y_tree = list(map(lambda value: value == i if 1 else 0, y))
-        trees.append(decision_tree_learning(x, attributes, y_tree))
-
-    # analyse_data(number_of_trees, x, y)
-    robust_validation(number_of_trees, trees, x, y)
+    # trees = []
+    # # Parent call to recursive function
+    # for i in range(1, number_of_trees + 1):
+    #     # the binary target for index i
+    #     y_tree = list(map(lambda value: value == i if 1 else 0, y))
+    #     trees.append(decision_tree_learning(x, attributes, y_tree))
+    #
+    # # analyse_data(number_of_trees, x, y)
+    # robust_validation(number_of_trees, trees, x, y)
+    validation(number_of_trees, attributes, x, y)
 
 
 def analyse_data(number_of_trees, x, y):
@@ -54,8 +55,32 @@ def robust_validation(number_of_trees, trees, x, y):
 
     print("FN: " + str(trees_FN))
     print("FP: " + str(trees_FP))
+    print()
 
-    dump_tree("6", trees[5])
+    # dump_tree("6", trees[5])
+
+def validation(number_of_trees, attributes, x, y):
+    for i in range(10):
+        test_data_input = []
+        test_data_output = []
+        traing_data_input = []
+        traing_data_output = []
+        for j in range(len(x)):
+            if (j % 10 == i):
+                test_data_input.append(x[j])
+                test_data_output.append(y[j])
+            else:
+                traing_data_input.append(x[j])
+                traing_data_output.append(y[j])
+        trees = []
+        # Parent call to recursive function
+        for i in range(1, number_of_trees + 1):
+            # the binary target for index i
+            y_tree = list(map(lambda value: value == i if 1 else 0, traing_data_output))
+            trees.append(decision_tree_learning(traing_data_input, attributes, y_tree))
+
+        robust_validation(number_of_trees, trees, test_data_input, test_data_output)
+
 
 
 def decision_tree_learning(examples, attributes, binary_targets):
