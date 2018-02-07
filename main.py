@@ -45,7 +45,7 @@ def main():
 
 
         tree_priority = [0] * number_of_trees
-        if randomise:
+        if not randomise:
             unvalidated_trees = train_trees(number_of_trees, attributes, traing_data_input, traing_data_output)
             tree_priority = get_tree_priority(unvalidated_trees, validation_data_input, validation_data_output)
         trees = train_trees(number_of_trees, attributes, traing_data_input + validation_data_input, traing_data_output + validation_data_output)
