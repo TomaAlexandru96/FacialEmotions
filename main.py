@@ -22,22 +22,18 @@ def main():
     mat = spio.loadmat(clean_data, squeeze_me=True)
     x = list(mat['x'])
     y = list(mat['y'])
-
-    train = partial(train_validate, x=x, y=y, total_attributes=total_attributes, number_of_trees=number_of_trees, k_folds=k_folds, randomise=randomise)
+    attributes = list(range(1, total_attributes + 1))
+    train = partial(train_validate, x=x, y=y, attributes=attributes[:], number_of_trees=number_of_trees, k_folds=k_folds, randomise=randomise)
     perc_acc = pool.map(train, range(k_folds))
     perc_acc.sort()
     print(perc_acc)
     print(np.mean(perc_acc))
 
-
-def train_validate(i, x, y, total_attributes, number_of_trees, k_folds, randomise):
-    # Create attributes
-    attributes = list(range(1, total_attributes + 1))
-    random.shuffle(attributes)
+def train_validate(i, x, y, attributes, number_of_trees, k_folds, randomise):
     test_data_input = []
     test_data_output = []
-    traing_data_input = []
-    traing_data_output = []
+    training_data_input = []
+    training_data_output = []
     validation_data_input = []
     validation_data_output = []
     for j in range(len(x)):
@@ -48,14 +44,13 @@ def train_validate(i, x, y, total_attributes, number_of_trees, k_folds, randomis
             validation_data_input.append(x[j])
             validation_data_output.append(y[j])
         else:
-            traing_data_input.append(x[j])
-            traing_data_output.append(y[j])
-
+            training_data_input.append(x[j])
+            training_data_output.append(y[j])
     tree_priority = [0] * number_of_trees
     if not randomise:
-        unvalidated_trees = train_trees(number_of_trees, attributes, traing_data_input, traing_data_output)
+        unvalidated_trees = train_trees(number_of_trees, attributes, training_data_input, training_data_output)
         tree_priority = get_tree_priority(unvalidated_trees, validation_data_input, validation_data_output)
-    trees = train_trees(number_of_trees, attributes, traing_data_input + validation_data_input, traing_data_output + validation_data_output)
+    trees = train_trees(number_of_trees, attributes, training_data_input + validation_data_input, training_data_output + validation_data_output)
     predictions = test_trees(trees, test_data_input, tree_priority, randomise)
     return evaluate_results(predictions, test_data_output)
 
@@ -85,14 +80,13 @@ def evaluate_results(predictions, actual_outputs):
     perc_incorrect = (incorrect_cases / total) * 100
     return perc_correct
 
-
-def train_trees(number_of_trees, attributes, traing_data_input, traing_data_output):
+def train_trees(number_of_trees, attributes, training_data_input, training_data_output):
     trees = []
     # Parent call to recursive function
     for i in range(1, number_of_trees + 1):
         # the binary target for index i
-        y_tree = list(map(lambda value: value == i if 1 else 0, traing_data_output))
-        trees.append(decision_tree_learning(traing_data_input, attributes, y_tree))
+        y_tree = list(map(lambda value: value == i if 1 else 0, training_data_output))
+        trees.append(decision_tree_learning(training_data_input, attributes, y_tree))
     return trees
 
 
