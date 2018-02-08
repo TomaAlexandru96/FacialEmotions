@@ -38,12 +38,15 @@ def train_validate(i, x, y, attributes, number_of_trees, k_folds, randomise):
     validation_data_output = []
     for j in range(len(x)):
         if (j % k_folds == i):
+            # One fold data used for tests
             test_data_input.append(x[j])
             test_data_output.append(y[j])
         elif (j % k_folds == (i+1) % k_folds):
+            # One fold data used for validation
             validation_data_input.append(x[j])
             validation_data_output.append(y[j])
         else:
+            # Remaining eight fold data used for training
             training_data_input.append(x[j])
             training_data_output.append(y[j])
     tree_priority = [0] * number_of_trees
@@ -53,7 +56,6 @@ def train_validate(i, x, y, attributes, number_of_trees, k_folds, randomise):
     trees = train_trees(number_of_trees, attributes, training_data_input + validation_data_input, training_data_output + validation_data_output)
     predictions = test_trees(trees, test_data_input, tree_priority, randomise)
     return evaluate_results(predictions, test_data_output)
-
 
 def robust_validation(number_of_trees, trees, x, y):
     trees_FP = [0] * number_of_trees
@@ -65,7 +67,6 @@ def robust_validation(number_of_trees, trees, x, y):
                 trees_FN[t] += 1
             elif y[i] != t+1 and tree_output:
                 trees_FP[t] += 1
-
 
 def evaluate_results(predictions, actual_outputs):
     correct_cases = 0
@@ -179,7 +180,6 @@ def same_binary_targets(binary_targets):
         if target != first_target:
             return False
     return True
-
 
 # finds the mode of the vector
 def majority_value(binary_targets):
