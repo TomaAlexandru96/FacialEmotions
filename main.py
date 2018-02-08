@@ -19,22 +19,20 @@ def main():
     pool = multiprocessing.Pool(10)
 
     # Extract data from the file
-    mat = spio.loadmat(noisy_data, squeeze_me=True)
+    mat = spio.loadmat(clean_data, squeeze_me=True)
     x = list(mat['x'])
     y = list(mat['y'])
 
-    # Create attributes
-    attributes = list(range(1,46))
-    random.shuffle(attributes)
-
-    train = partial(train_validate, x=x, y=y, number_of_trees=number_of_trees,
-        attributes=attributes, k_folds=k_folds,randomise=randomise);
+    train = partial(train_validate, x=x, y=y, total_attributes=total_attributes, number_of_trees=number_of_trees, k_folds=k_folds,randomise=randomise);
     perc_acc = pool.map(train, range(k_folds))
     perc_acc.sort()
     print(perc_acc)
     print(np.mean(perc_acc))
 
-def train_validate(i, x, y, number_of_trees, attributes, k_folds, randomise):
+def train_validate(i, x, y, total_attributes, number_of_trees, k_folds, randomise):
+    # Create attributes
+    attributes = list(range(1,total_attributes + 1))
+    random.shuffle(attributes)
     test_data_input = []
     test_data_output = []
     traing_data_input = []
