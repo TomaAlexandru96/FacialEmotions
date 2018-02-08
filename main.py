@@ -23,15 +23,16 @@ def main():
     x = list(mat['x'])
     y = list(mat['y'])
 
-    train = partial(train_validate, x=x, y=y, total_attributes=total_attributes, number_of_trees=number_of_trees, k_folds=k_folds,randomise=randomise);
+    train = partial(train_validate, x=x, y=y, total_attributes=total_attributes, number_of_trees=number_of_trees, k_folds=k_folds, randomise=randomise)
     perc_acc = pool.map(train, range(k_folds))
     perc_acc.sort()
     print(perc_acc)
     print(np.mean(perc_acc))
 
+
 def train_validate(i, x, y, total_attributes, number_of_trees, k_folds, randomise):
     # Create attributes
-    attributes = list(range(1,total_attributes + 1))
+    attributes = list(range(1, total_attributes + 1))
     random.shuffle(attributes)
     test_data_input = []
     test_data_output = []
@@ -58,6 +59,7 @@ def train_validate(i, x, y, total_attributes, number_of_trees, k_folds, randomis
     predictions = test_trees(trees, test_data_input, tree_priority, randomise)
     return evaluate_results(predictions, test_data_output)
 
+
 def robust_validation(number_of_trees, trees, x, y):
     trees_FP = [0] * number_of_trees
     trees_FN = [0] * number_of_trees
@@ -68,6 +70,7 @@ def robust_validation(number_of_trees, trees, x, y):
                 trees_FN[t] += 1
             elif y[i] != t+1 and tree_output:
                 trees_FP[t] += 1
+
 
 def evaluate_results(predictions, actual_outputs):
     correct_cases = 0
@@ -82,6 +85,7 @@ def evaluate_results(predictions, actual_outputs):
     perc_incorrect = (incorrect_cases / total) * 100
     return perc_correct
 
+
 def train_trees(number_of_trees, attributes, traing_data_input, traing_data_output):
     trees = []
     # Parent call to recursive function
@@ -91,6 +95,7 @@ def train_trees(number_of_trees, attributes, traing_data_input, traing_data_outp
         trees.append(decision_tree_learning(traing_data_input, attributes, y_tree))
     return trees
 
+
 def get_tree_priority(trees, validation_data_input, validation_data_output):
     number_of_trees = len(trees)
     tree_priority = [0] * number_of_trees
@@ -99,6 +104,7 @@ def get_tree_priority(trees, validation_data_input, validation_data_output):
         tree_priority[t] = get_perc_accuracy(tree, t + 1, validation_data_input, validation_data_output)
     return tree_priority
 
+
 def get_perc_accuracy(tree, emotion_val, x, y):
     correct = 0
     for i in range(len(x)):
@@ -106,6 +112,7 @@ def get_perc_accuracy(tree, emotion_val, x, y):
         if (y[i] == emotion_val and output) or (y[i] !=emotion_val and (not output)):
             correct += 1
     return correct / len(x)
+
 
 def test_trees(trees, test_data, tree_priority, randomise):
     number_of_trees = len(trees)
@@ -121,6 +128,7 @@ def test_trees(trees, test_data, tree_priority, randomise):
             final_result[i] = get_emotion_val(test_case_output, tree_priority)
     return final_result
 
+
 def get_emotion_val_rand(output):
     trues = []
     for i in range(len(output)):
@@ -130,6 +138,7 @@ def get_emotion_val_rand(output):
         return random.randint(1, len(output))
     return random.choice(trues) + 1
 
+
 def get_emotion_val(output, tree_priority):
     trues = []
     for i in range(len(output)):
@@ -138,6 +147,7 @@ def get_emotion_val(output, tree_priority):
         else:
             trues.append(-tree_priority[i])
     return trues.index(max(trues)) + 1
+
 
 def decision_tree_learning(examples, attributes, binary_targets):
     if same_binary_targets(binary_targets):
@@ -165,6 +175,7 @@ def decision_tree_learning(examples, attributes, binary_targets):
                 attributes.append(best_attribute)
         return tree
 
+
 # checks if binary_targets vector contains same values
 def same_binary_targets(binary_targets):
     if len(binary_targets) <= 0:
@@ -191,7 +202,7 @@ def get_entropy(p, n):
 # find between 1 and 45
 def choose_best_decision_attribute(examples, attributes, binary_targets):
     max_gain = -1
-    index_max = -1
+    maxs = []
 
     for index, attr in enumerate(attributes):
         p0 = 0
@@ -223,12 +234,14 @@ def choose_best_decision_attribute(examples, attributes, binary_targets):
         gain = get_entropy(p, n) - remainder
         if gain > max_gain:
             max_gain = gain
-            index_max = index
+            maxs = [index]
+        elif gain == max_gain:
+            maxs.append(index)
 
-    if index_max == -1:
+    if len(maxs) == 0:
         raise ValueError("Index is -1")
 
-    return attributes[index_max]
+    return attributes[random.choice(maxs)]
 
 
 def dump_tree(tree_name, tree):
