@@ -1,6 +1,7 @@
 import scipy.io as spio
 from tree import TreeNode
 import math
+import sys
 import random
 import numpy as np
 import multiprocessing
@@ -21,8 +22,9 @@ def main():
 
     # Extract data from the file
     mat = spio.loadmat(clean_data, squeeze_me=True)
-    x = list(mat['x'])
-    y = list(mat['y'])
+    x_input = list(mat['x'])
+    y_input = list(mat['y'])
+    x, y = shuffle_data(x_input, y_input)
     attributes = list(range(1, total_attributes + 1))
     train = partial(train_validate, x=x, y=y, attributes=attributes[:], number_of_trees=number_of_trees, k_folds=k_folds, randomise=randomise)
     res = pool.map(train, range(k_folds))
@@ -38,10 +40,15 @@ def main():
         for j in range(number_of_trees):
             confusion_matrix[i][j] /= k_folds
 
-    # print(confusion_matrix)
+    print(confusion_matrix)
     print(percentages)
     print(np.mean(percentages))
 
+def shuffle_data(a, b):
+    combined = list(zip(a, b))
+    random.shuffle(combined)
+    a[:], b[:] = zip(*combined)
+    return a, b
 
 def train_validate(i, x, y, attributes, number_of_trees, k_folds, randomise):
     test_data_input = []
@@ -145,21 +152,28 @@ def get_emotion_val_rand(output):
 
 
 def get_emotion_val(output, tree_priority):
-    entropies = []
-    for i in range(len(output)):
-        if output[i][0]:
-            entropies.append(-output[i][1])
-        else:
-            entropies.append(output[i][1] - 1)
-    best_entropy = max(entropies)
-    best_entropy_index = entropies.index(best_entropy)
     heights = []
+    all_false = True
     for i in range(len(output)):
-        if entropies[i] == best_entropy:
+        # If tree's output is positive (identifies emotion positively)
+        if output[i][0]:
+            all_false = False
             heights.append(output[i][2])
         else:
-            heights.append(-output[i][2])
-    return heights.index(max(heights)) + 1
+            heights.append(-output[i][2] + sys.maxsize)
+    min_height = min(heights)
+    counter = collections.Counter(heights)
+    if counter[min_height] > 1:
+        # Incase multiple emotion values with same height value
+        entropy_priorities = []
+        for i in range(len(output)):
+            if heights[i] == min_height:
+                entropy_priorities.append(output[i][1])
+            else:
+                entropy_priorities.append(1 - output[i][1])
+        return entropy_priorities.index(min(entropy_priorities)) + 1
+    else:
+        return heights.index(min_height) + 1
 
 def decision_tree_learning(examples, attributes, binary_targets):
     if same_binary_targets(binary_targets):
