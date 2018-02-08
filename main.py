@@ -4,6 +4,7 @@ import math
 import random
 import numpy as np
 import multiprocessing
+import collections
 from functools import partial, reduce
 
 
@@ -37,7 +38,8 @@ def main():
         for j in range(number_of_trees):
             confusion_matrix[i][j] /= k_folds
 
-    print(confusion_matrix)
+    # print(confusion_matrix)
+    print(percentages)
     print(np.mean(percentages))
 
 
@@ -72,21 +74,8 @@ def train_validate(i, x, y, attributes, number_of_trees, k_folds, randomise):
     # get confusion matrix
     for i in range(len(predictions)):
         confusion_mat[test_data_output[i]-1][predictions[i]-1] += 1
-    
+
     return confusion_mat, evaluate_results(predictions, test_data_output)
-
-
-def robust_validation(number_of_trees, trees, x, y):
-    trees_FP = [0] * number_of_trees
-    trees_FN = [0] * number_of_trees
-    for i in range(len(x)):
-        for t in range(number_of_trees):
-            tree_output = trees[t].parse_tree(x[i])
-            if y[i] == t+1 and not tree_output:
-                trees_FN[t] += 1
-            elif y[i] != t+1 and tree_output:
-                trees_FP[t] += 1
-
 
 def evaluate_results(predictions, actual_outputs):
     correct_cases = 0
@@ -124,7 +113,7 @@ def get_tree_priority(trees, validation_data_input, validation_data_output):
 def get_perc_accuracy(tree, emotion_val, x, y):
     correct = 0
     for i in range(len(x)):
-        output = tree.parse_tree(x[i])
+        output, _, _ = tree.parse_tree(x[i], 0)
         if (y[i] == emotion_val and output) or (y[i] != emotion_val and (not output)):
             correct += 1
     return correct / len(x)
@@ -134,10 +123,10 @@ def test_trees(trees, test_data, tree_priority, randomise):
     number_of_trees = len(trees)
     final_result = [0] * len(test_data)
     for i in range(len(test_data)):
-        test_case_output = [0] * number_of_trees
+        test_case_output = [(0,0,0)] * number_of_trees
         for t in range(number_of_trees):
-            output = trees[t].parse_tree(test_data[i])
-            test_case_output[t] = output
+            output, entropy, height = trees[t].parse_tree(test_data[i], 0)
+            test_case_output[t] = (output, entropy, height)
         if randomise:
             final_result[i] = get_emotion_val_rand(test_case_output)
         else:
@@ -156,20 +145,28 @@ def get_emotion_val_rand(output):
 
 
 def get_emotion_val(output, tree_priority):
-    trues = []
+    entropies = []
     for i in range(len(output)):
-        if output[i]:
-            trues.append(tree_priority[i])
+        if output[i][0]:
+            entropies.append(-output[i][1])
         else:
-            trues.append(-tree_priority[i])
-    return trues.index(max(trues)) + 1
-
+            entropies.append(output[i][1] - 1)
+    best_entropy = max(entropies)
+    best_entropy_index = entropies.index(best_entropy)
+    heights = []
+    for i in range(len(output)):
+        if entropies[i] == best_entropy:
+            heights.append(output[i][2])
+        else:
+            heights.append(-output[i][2])
+    return heights.index(max(heights)) + 1
 
 def decision_tree_learning(examples, attributes, binary_targets):
     if same_binary_targets(binary_targets):
-        return TreeNode.create_leaf(binary_targets[0])
+        return TreeNode.create_leaf(binary_targets[0], 0)
     elif len(attributes) == 0:
-        return TreeNode.create_leaf(majority_value(binary_targets))
+        counter = collections.Counter(binary_targets)
+        return TreeNode.create_leaf(majority_value(binary_targets), get_entropy(counter[1], counter[0]))
     else:
         best_attribute = choose_best_decision_attribute(examples, attributes, binary_targets)
         tree = TreeNode.create_internal(best_attribute)
@@ -183,14 +180,15 @@ def decision_tree_learning(examples, attributes, binary_targets):
                     v_binary_targets.append(binary_targets[i])
 
             if len(v_examples) == 0:
-                return TreeNode.create_leaf(majority_value(binary_targets))
+                counter = collections.Counter(binary_targets)
+
+                return TreeNode.create_leaf(majority_value(binary_targets), get_entropy(counter[1], counter[0]))
             else:
                 attributes.remove(best_attribute)
                 subtree = decision_tree_learning(v_examples, attributes, v_binary_targets)
                 tree.add_kid(subtree)
                 attributes.append(best_attribute)
         return tree
-
 
 # checks if binary_targets vector contains same values
 def same_binary_targets(binary_targets):

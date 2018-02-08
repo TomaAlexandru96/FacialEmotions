@@ -1,16 +1,17 @@
 class TreeNode:
-    def __init__(self, attribute=None, label=None):
+    def __init__(self, attribute=None, label=None, entropy=None):
         self.label = label   # Leaf node decision
         self.op = attribute  # Internal node name
         self.kids = []
+        self.entropy = entropy
 
     def add_kid(self, kid):
         self.kids.append(kid)
         return self
 
     @staticmethod
-    def create_leaf(label):
-        return TreeNode(label=label)
+    def create_leaf(label, entropy):
+        return TreeNode(label=label, entropy=entropy)
 
     @staticmethod
     def create_internal(attribute):
@@ -19,11 +20,11 @@ class TreeNode:
     def is_leaf(self):
         return self.label is not None
 
-    def parse_tree(self, data):
+    def parse_tree(self, data, tree_height):
         if self.is_leaf():
-            return self.label
+            return self.label, self.entropy, tree_height
         else:
-            return self.kids[data[self.op - 1]].parse_tree(data)
+            return self.kids[data[self.op - 1]].parse_tree(data, tree_height + 1)
 
     def to_string(self):
         return self.__to_string__("", True, False)
