@@ -51,9 +51,9 @@ def train_validate(i, x, y, attributes, number_of_trees, k_folds, randomise):
             training_data_output.append(y[j])
     tree_priority = [0] * number_of_trees
     if not randomise:
-        unvalidated_trees = train_trees(number_of_trees, attributes, training_data_input, training_data_output)
+        unvalidated_trees = train_trees(number_of_trees, attributes[:], training_data_input, training_data_output)
         tree_priority = get_tree_priority(unvalidated_trees, validation_data_input, validation_data_output)
-    trees = train_trees(number_of_trees, attributes, training_data_input + validation_data_input, training_data_output + validation_data_output)
+    trees = train_trees(number_of_trees, attributes[:], training_data_input + validation_data_input, training_data_output + validation_data_output)
     predictions = test_trees(trees, test_data_input, tree_priority, randomise)
     return evaluate_results(predictions, test_data_output)
 

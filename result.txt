@@ -5,6 +5,9 @@ k fold data:
     50 - 71.51904761904761
 
 
+attributes left:
+
+
 attributes:
 69.92871287128713
 69.81980198019802
