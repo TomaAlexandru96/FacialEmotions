@@ -4,7 +4,7 @@ import math
 import random
 import numpy as np
 import multiprocessing
-from functools import partial
+from functools import partial, reduce
 
 
 def main():
@@ -16,7 +16,7 @@ def main():
     k_folds = 10
     randomise = False
 
-    pool = multiprocessing.Pool(10)
+    pool = multiprocessing.Pool(k_folds)
 
     # Extract data from the file
     mat = spio.loadmat(clean_data, squeeze_me=True)
@@ -24,10 +24,22 @@ def main():
     y = list(mat['y'])
     attributes = list(range(1, total_attributes + 1))
     train = partial(train_validate, x=x, y=y, attributes=attributes[:], number_of_trees=number_of_trees, k_folds=k_folds, randomise=randomise)
-    perc_acc = pool.map(train, range(k_folds))
-    perc_acc.sort()
-    print(perc_acc)
-    print(np.mean(perc_acc))
+    res = pool.map(train, range(k_folds))
+    percentages = list(map(lambda tup: tup[1], res))
+    mats = list(map(lambda tup: tup[0], res))
+    confusion_matrix = [[0 for _ in range(number_of_trees)] for _ in range(number_of_trees)]
+    for mat in mats:
+        for i in range(number_of_trees):
+            for j in range(number_of_trees):
+                confusion_matrix[i][j] += mat[i][j]
+
+    for i in range(number_of_trees):
+        for j in range(number_of_trees):
+            confusion_matrix[i][j] /= k_folds
+
+    print(confusion_matrix)
+    print(np.mean(percentages))
+
 
 def train_validate(i, x, y, attributes, number_of_trees, k_folds, randomise):
     test_data_input = []
@@ -37,11 +49,11 @@ def train_validate(i, x, y, attributes, number_of_trees, k_folds, randomise):
     validation_data_input = []
     validation_data_output = []
     for j in range(len(x)):
-        if (j % k_folds == i):
+        if j % k_folds == i:
             # One fold data used for tests
             test_data_input.append(x[j])
             test_data_output.append(y[j])
-        elif (j % k_folds == (i+1) % k_folds):
+        elif j % k_folds == (i+1) % k_folds:
             # One fold data used for validation
             validation_data_input.append(x[j])
             validation_data_output.append(y[j])
@@ -55,7 +67,14 @@ def train_validate(i, x, y, attributes, number_of_trees, k_folds, randomise):
         tree_priority = get_tree_priority(unvalidated_trees, validation_data_input, validation_data_output)
     trees = train_trees(number_of_trees, attributes[:], training_data_input + validation_data_input, training_data_output + validation_data_output)
     predictions = test_trees(trees, test_data_input, tree_priority, randomise)
-    return evaluate_results(predictions, test_data_output)
+
+    confusion_mat = [[0 for _ in range(number_of_trees)] for _ in range(number_of_trees)]
+    # get confusion matrix
+    for i in range(len(predictions)):
+        confusion_mat[test_data_output[i]-1][predictions[i]-1] += 1
+    
+    return confusion_mat, evaluate_results(predictions, test_data_output)
+
 
 def robust_validation(number_of_trees, trees, x, y):
     trees_FP = [0] * number_of_trees
@@ -68,11 +87,12 @@ def robust_validation(number_of_trees, trees, x, y):
             elif y[i] != t+1 and tree_output:
                 trees_FP[t] += 1
 
+
 def evaluate_results(predictions, actual_outputs):
     correct_cases = 0
     incorrect_cases = 0
     for k in range(len(predictions)):
-        if (predictions[k] == actual_outputs[k]):
+        if predictions[k] == actual_outputs[k]:
             correct_cases += 1
         else:
             incorrect_cases += 1
@@ -80,6 +100,7 @@ def evaluate_results(predictions, actual_outputs):
     perc_correct = (correct_cases / total) * 100
     perc_incorrect = (incorrect_cases / total) * 100
     return perc_correct
+
 
 def train_trees(number_of_trees, attributes, training_data_input, training_data_output):
     trees = []
@@ -104,7 +125,7 @@ def get_perc_accuracy(tree, emotion_val, x, y):
     correct = 0
     for i in range(len(x)):
         output = tree.parse_tree(x[i])
-        if (y[i] == emotion_val and output) or (y[i] !=emotion_val and (not output)):
+        if (y[i] == emotion_val and output) or (y[i] != emotion_val and (not output)):
             correct += 1
     return correct / len(x)
 
@@ -189,7 +210,6 @@ def majority_value(binary_targets):
 def get_entropy(p, n):
     if p == 0 or n == 0:
         return 0
-
     return -(p/(p+n)) * math.log(p/(p+n), 2) - (n/(p+n)) * math.log(n/(p+n), 2)
 
 
