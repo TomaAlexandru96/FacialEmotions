@@ -88,15 +88,15 @@ def train_test(i, x, y, attributes, number_of_trees, k_folds, randomise):
 
 
     #train final trees and get predictions from test data
-    trees = train_trees(number_of_trees, attributes[:], training_data_input + validation_data_input, training_data_output + validation_data_output)
+    trees = train_trees(number_of_trees, attributes[:], training_data_input, training_data_output)
 
     change = 0
     while (change <= 0.001):
         new_trees = trees[:]
-        before = np.mean(get_tree_priority(new_trees, test_data_input, test_data_output))
+        before = np.mean(get_tree_priority(new_trees, validation_data_input, validation_data_output))
         for i in range(len(new_trees)):
             new_trees[i].prune_tree(0, 15)
-        change = np.mean(get_tree_priority(new_trees, test_data_input, test_data_output)) - before
+        change = np.mean(get_tree_priority(new_trees, validation_data_input, validation_data_output)) - before
     print ("change ", change * 100)
     # dump_tree("before " + str(i), trees[0])
     # trees[0].prune_tree(0)
