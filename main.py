@@ -23,12 +23,12 @@ RANDOMISE = False
 def get_args():
     parser = argparse.ArgumentParser()
     group = parser.add_mutually_exclusive_group(required=True)
-    group.add_argument("--load", help="Boolean: Load the trees.", action='store_true')
-    group.add_argument("--train", help="Boolean: Load the trees.", action='store_true')
+    group.add_argument("--load", help="Load the trees.", action='store_true')
+    group.add_argument("--train", help="Train the trees.", action='store_true')
 
-    parser.add_argument("--save", help="Boolean: Train and save the trees.", action='store_true')
-    parser.add_argument("--data", help="String: clean or noisy", type=str)
-    parser.add_argument("--dump", help="Boolean: Train and save the trees.", action='store_true')
+    parser.add_argument("--save", help="Train and save the trees.", action='store_true')
+    parser.add_argument("--data", help="What kind of date do you want to use clean or noisy", type=str)
+    parser.add_argument("--dump", help="Train and save the trees.", action='store_true')
     args = parser.parse_args()
     return args
 
