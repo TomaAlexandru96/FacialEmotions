@@ -1,16 +1,19 @@
+import random
+
 class TreeNode:
-    def __init__(self, attribute=None, label=None):
+    def __init__(self, attribute=None, label=None, entropy=None):
         self.label = label   # Leaf node decision
         self.op = attribute  # Internal node name
         self.kids = []
+        self.entropy = entropy
 
     def add_kid(self, kid):
         self.kids.append(kid)
         return self
 
     @staticmethod
-    def create_leaf(label):
-        return TreeNode(label=label)
+    def create_leaf(label, entropy):
+        return TreeNode(label=label, entropy=entropy)
 
     @staticmethod
     def create_internal(attribute):
@@ -19,11 +22,39 @@ class TreeNode:
     def is_leaf(self):
         return self.label is not None
 
-    def parse_tree(self, data):
+    def parse_tree(self, data, tree_height):
         if self.is_leaf():
-            return self.label
+            return self.label, self.entropy, tree_height
         else:
-            return self.kids[data[self.op - 1]].parse_tree(data)
+            return self.kids[data[self.op - 1]].parse_tree(data, tree_height + 1)
+
+    def get_value(self, val):
+        if self.is_leaf():
+            if self.label == True:
+                return val
+            else:
+                return -val
+        else:
+            ret = 0
+            for i in range(len(self.kids)):
+                ret += self.kids[i].get_value(val/2)
+            return ret
+
+    def prune_tree(self, tree_height, prob):
+        if tree_height < 5:
+            for i in range(len(self.kids)):
+                self.kids[i].prune_tree(tree_height+1, prob)
+        else:
+            for i in range(len(self.kids)):
+                rand = random.randint(1,100)
+                if rand <= prob:
+                    val = self.kids[i].get_value(1)
+                    if val > 0:
+                        self.kids[i] = TreeNode.create_leaf(True, 0.5)
+                    else:
+                        self.kids[i] = TreeNode.create_leaf(False, 0.5)
+                else:
+                    self.kids[i].prune_tree(tree_height+1,prob)
 
     def to_string(self):
         return self.__to_string__("", True, False)
