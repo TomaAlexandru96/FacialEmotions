@@ -3,10 +3,12 @@ import os
 import argparse
 from tree import TreeNode
 import math
+import sys
 import random
-import numpy as np
 import multiprocessing
+import collections
 from functools import partial
+import numpy as np
 
 # constants
 CLEAN_DATA = 'Data/cleandata_students.mat'
@@ -50,7 +52,7 @@ def main():
     if args.train:
         pool = multiprocessing.Pool(K_FOLDS)
         attributes = list(range(1, TOTAL_ATTRIBUTES + 1))
-        train = partial(train_validate, x=x, y=y, attributes=attributes[:], number_of_trees=NUMBER_OF_TREES, k_folds=K_FOLDS, randomise=RANDOMISE)
+        train = partial(train_test, x=x, y=y, attributes=attributes[:], number_of_trees=NUMBER_OF_TREES, k_folds=K_FOLDS, randomise=RANDOMISE)
 
         # save or interpret result
         res = pool.map(train, range(K_FOLDS))
@@ -66,7 +68,10 @@ def main():
         confusion_matrix = get_average_confusion_mat(NUMBER_OF_TREES, mats)
         print("Trained Successfully")
         print("Maximum precision: " + str(max(percentages)))
-        print("Confusion matrix: " + str(confusion_matrix))
+        print("Confusion matrix: \n" + str(np.matrix(confusion_matrix)))
+        print("Average recall: " + str(get_average_recall(confusion_matrix)))
+        print("Average precision: " + str(get_average_precision(confusion_matrix)))
+        print("F1: " + str(get_f_alpha(1, get_average_precision(confusion_matrix), get_average_recall(confusion_matrix))))
 
     if args.dump:
         for i in range(len(trees)):
@@ -95,8 +100,29 @@ def load_trees(nr_of_trees):
     return trees
 
 
+def get_average_recall(confusion_matt):
+    average_recall = 0
+    for i in range(len(confusion_matt)):
+        TP_PLUS_TN = sum(confusion_matt[i])
+        TP = confusion_matt[i][i]
+        average_recall += TP / TP_PLUS_TN
+    return average_recall / len(confusion_matt) * 100
+
+
+def get_average_precision(confusion_matt):
+    average_precision = 0
+    for j in range(len(confusion_matt)):
+        TP_PLUS_FP = sum([confusion_matt[i][j] for i in range(len(confusion_matt))])
+        TP = confusion_matt[j][j]
+        average_precision += TP / TP_PLUS_FP
+    return average_precision / len(confusion_matt) * 100
+
+
+def get_f_alpha(alpha, average_precision, average_recall):
+    return (1 + alpha) * ((average_precision * average_recall) / (alpha * average_precision + average_recall))
+
+
 def get_average_confusion_mat(number_of_trees, mats):
-    # compute average confusion matrix
     confusion_matrix = [[0 for _ in range(number_of_trees)] for _ in range(number_of_trees)]
     for mat in mats:
         for i in range(number_of_trees):
@@ -117,7 +143,14 @@ def get_confusion_mat(predictions, test_data_output, number_of_trees):
     return confusion_mat
 
 
-def train_validate(i, x, y, attributes, number_of_trees, k_folds, randomise):
+def shuffle_data(a, b):
+    combined = list(zip(a, b))
+    random.shuffle(combined)
+    a[:], b[:] = zip(*combined)
+    return a, b
+
+
+def train_test(i, x, y, attributes, number_of_trees, k_folds, randomise):
     test_data_input = []
     test_data_output = []
     training_data_input = []
@@ -138,29 +171,21 @@ def train_validate(i, x, y, attributes, number_of_trees, k_folds, randomise):
             training_data_input.append(x[j])
             training_data_output.append(y[j])
     tree_priority = [0] * number_of_trees
+
     if not randomise:
+        # if not using random strategy get tree_priority from validation data
         unvalidated_trees = train_trees(number_of_trees, attributes[:], training_data_input, training_data_output)
         tree_priority = get_tree_priority(unvalidated_trees, validation_data_input, validation_data_output)
-    trees = train_trees(number_of_trees, attributes[:], training_data_input + validation_data_input, training_data_output + validation_data_output)
-    predictions = test_trees(trees, test_data_input, tree_priority, randomise)
 
+    # train final trees and get predictions from test data
+    trees = train_trees(number_of_trees, attributes[:], training_data_input + validation_data_input, training_data_output + validation_data_output)
+    predictions = get_predictions(trees, test_data_input, tree_priority, randomise)
     confusion_mat = get_confusion_mat(predictions, test_data_output, number_of_trees)
 
     return confusion_mat, evaluate_results(predictions, test_data_output), trees
 
 
-def robust_validation(number_of_trees, trees, x, y):
-    trees_FP = [0] * number_of_trees
-    trees_FN = [0] * number_of_trees
-    for i in range(len(x)):
-        for t in range(number_of_trees):
-            tree_output = trees[t].parse_tree(x[i])
-            if y[i] == t+1 and not tree_output:
-                trees_FN[t] += 1
-            elif y[i] != t+1 and tree_output:
-                trees_FP[t] += 1
-
-
+# compare predictions with actual results
 def evaluate_results(predictions, actual_outputs):
     correct_cases = 0
     incorrect_cases = 0
@@ -175,6 +200,7 @@ def evaluate_results(predictions, actual_outputs):
     return perc_correct
 
 
+# train and return all trees
 def train_trees(number_of_trees, attributes, training_data_input, training_data_output):
     trees = []
     # Parent call to recursive function
@@ -185,6 +211,7 @@ def train_trees(number_of_trees, attributes, training_data_input, training_data_
     return trees
 
 
+# get accuracy of each tree depending on results of each
 def get_tree_priority(trees, validation_data_input, validation_data_output):
     number_of_trees = len(trees)
     tree_priority = [0] * number_of_trees
@@ -194,23 +221,25 @@ def get_tree_priority(trees, validation_data_input, validation_data_output):
     return tree_priority
 
 
+# get percentage accuracy of the tree
 def get_perc_accuracy(tree, emotion_val, x, y):
     correct = 0
     for i in range(len(x)):
-        output = tree.parse_tree(x[i])
+        output, _, _ = tree.parse_tree(x[i], 0)
         if (y[i] == emotion_val and output) or (y[i] != emotion_val and (not output)):
             correct += 1
     return correct / len(x)
 
 
-def test_trees(trees, test_data, tree_priority, randomise):
+# get final predictions given trees and test_data
+def get_predictions(trees, test_data, tree_priority, randomise):
     number_of_trees = len(trees)
     final_result = [0] * len(test_data)
     for i in range(len(test_data)):
-        test_case_output = [0] * number_of_trees
+        test_case_output = [(0,0,0)] * number_of_trees
         for t in range(number_of_trees):
-            output = trees[t].parse_tree(test_data[i])
-            test_case_output[t] = output
+            output, entropy, height = trees[t].parse_tree(test_data[i], 0)
+            test_case_output[t] = (output, entropy, height)
         if randomise:
             final_result[i] = get_emotion_val_rand(test_case_output)
         else:
@@ -218,6 +247,7 @@ def test_trees(trees, test_data, tree_priority, randomise):
     return final_result
 
 
+# get final output using random strategy
 def get_emotion_val_rand(output):
     trues = []
     for i in range(len(output)):
@@ -228,21 +258,38 @@ def get_emotion_val_rand(output):
     return random.choice(trues) + 1
 
 
+# get final output depending on final output and tree_priority
 def get_emotion_val(output, tree_priority):
-    trues = []
+    heights = []
+    all_false = True
     for i in range(len(output)):
-        if output[i]:
-            trues.append(tree_priority[i])
+        # If tree's output is positive (identifies emotion positively)
+        if output[i][0]:
+            all_false = False
+            heights.append(output[i][2])
         else:
-            trues.append(-tree_priority[i])
-    return trues.index(max(trues)) + 1
+            heights.append(-output[i][2] + sys.maxsize)
+    min_height = min(heights)
+    counter = collections.Counter(heights)
+    if counter[min_height] > 1:
+        # Increase multiple emotion values with same height value
+        entropy_priorities = []
+        for i in range(len(output)):
+            if heights[i] == min_height:
+                entropy_priorities.append(output[i][1])
+            else:
+                entropy_priorities.append(1 - output[i][1])
+        return entropy_priorities.index(min(entropy_priorities)) + 1
+    else:
+        return heights.index(min_height) + 1
 
 
 def decision_tree_learning(examples, attributes, binary_targets):
     if same_binary_targets(binary_targets):
-        return TreeNode.create_leaf(binary_targets[0])
+        return TreeNode.create_leaf(binary_targets[0], 0)
     elif len(attributes) == 0:
-        return TreeNode.create_leaf(majority_value(binary_targets))
+        counter = collections.Counter(binary_targets)
+        return TreeNode.create_leaf(majority_value(binary_targets), get_entropy(counter[1], counter[0]))
     else:
         best_attribute = choose_best_decision_attribute(examples, attributes, binary_targets)
         tree = TreeNode.create_internal(best_attribute)
@@ -256,7 +303,9 @@ def decision_tree_learning(examples, attributes, binary_targets):
                     v_binary_targets.append(binary_targets[i])
 
             if len(v_examples) == 0:
-                return TreeNode.create_leaf(majority_value(binary_targets))
+                counter = collections.Counter(binary_targets)
+
+                return TreeNode.create_leaf(majority_value(binary_targets), get_entropy(counter[1], counter[0]))
             else:
                 attributes.remove(best_attribute)
                 subtree = decision_tree_learning(v_examples, attributes, v_binary_targets)
