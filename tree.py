@@ -1,3 +1,5 @@
+import pickle
+
 class TreeNode:
     def __init__(self, attribute=None, label=None):
         self.label = label   # Leaf node decision
@@ -54,3 +56,10 @@ class TreeNode:
                 sb += "\n" + kid.__to_string__(p, False, index == len(self.kids) - 1)
 
             return sb
+
+    def save_tree(self, name):
+        pickle.dump(self, open(str(name) + ".p", "wb"))
+
+    @staticmethod
+    def load_tree(name):
+        return pickle.load(open(name + ".p", "rb"))

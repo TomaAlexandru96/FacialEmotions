@@ -1,32 +1,102 @@
 import scipy.io as spio
+import os
+import argparse
 from tree import TreeNode
 import math
 import random
 import numpy as np
 import multiprocessing
-from functools import partial, reduce
+from functools import partial
+
+# constants
+CLEAN_DATA = 'Data/cleandata_students.mat'
+NOISY_DATA = 'Data/noisydata_students.mat'
+TOTAL_ATTRIBUTES = 45
+NUMBER_OF_EMOTIONS = 6
+NUMBER_OF_TREES = NUMBER_OF_EMOTIONS
+K_FOLDS = 10
+RANDOMISE = False
+
+
+def get_args():
+    parser = argparse.ArgumentParser()
+    group = parser.add_mutually_exclusive_group(required=True)
+    group.add_argument("--load", help="Boolean: Load the trees.", action='store_true')
+    group.add_argument("--train", help="Boolean: Load the trees.", action='store_true')
+
+    parser.add_argument("--save", help="Boolean: Train and save the trees.", action='store_true')
+    parser.add_argument("--data", help="String: clean or noisy", type=str)
+    parser.add_argument("--dump", help="Boolean: Train and save the trees.", action='store_true')
+    args = parser.parse_args()
+    return args
 
 
 def main():
-    clean_data = 'Data/cleandata_students.mat'
-    noisy_data = 'Data/noisydata_students.mat'
-    total_attributes = 45
-    number_of_emotions = 6
-    number_of_trees = number_of_emotions
-    k_folds = 10
-    randomise = False
-
-    pool = multiprocessing.Pool(k_folds)
+    args = get_args()
 
     # Extract data from the file
-    mat = spio.loadmat(clean_data, squeeze_me=True)
+    if args.data is not None and args.data == "noisy":
+        mat = spio.loadmat(NOISY_DATA, squeeze_me=True)
+    else:
+        mat = spio.loadmat(CLEAN_DATA, squeeze_me=True)
+
     x = list(mat['x'])
     y = list(mat['y'])
-    attributes = list(range(1, total_attributes + 1))
-    train = partial(train_validate, x=x, y=y, attributes=attributes[:], number_of_trees=number_of_trees, k_folds=k_folds, randomise=randomise)
-    res = pool.map(train, range(k_folds))
-    percentages = list(map(lambda tup: tup[1], res))
-    mats = list(map(lambda tup: tup[0], res))
+    trees = []
+
+    if args.load:
+        trees = load_trees(NUMBER_OF_TREES)
+
+    if args.train:
+        pool = multiprocessing.Pool(K_FOLDS)
+        attributes = list(range(1, TOTAL_ATTRIBUTES + 1))
+        train = partial(train_validate, x=x, y=y, attributes=attributes[:], number_of_trees=NUMBER_OF_TREES, k_folds=K_FOLDS, randomise=RANDOMISE)
+
+        # save or interpret result
+        res = pool.map(train, range(K_FOLDS))
+        mats = list(map(lambda tup: tup[0], res))
+        percentages = list(map(lambda tup: tup[1], res))
+        all_trees = list(map(lambda tup: tup[2], res))
+
+        trees = choose_best(percentages, all_trees)
+
+        if args.save:
+            save_trees(trees)
+
+        confusion_matrix = get_average_confusion_mat(NUMBER_OF_TREES, mats)
+        print("Trained Successfully")
+        print("Maximum precision: " + str(max(percentages)))
+        print("Confusion matrix: " + str(confusion_matrix))
+
+    if args.dump:
+        for i in range(len(trees)):
+            dump_tree(i, trees[i])
+
+
+def choose_best(percentages, trees):
+    if not os.path.exists("trees"):
+        os.makedirs("trees")
+
+    # choose best trees
+    res = zip(percentages, trees)
+    best_trees = sorted(res, key=lambda el: el[0], reverse=True)[0][1]
+    return best_trees
+
+
+def save_trees(trees):
+    for i in range(len(trees)):
+        trees[i].save_tree("trees/tree_" + str(i))
+
+
+def load_trees(nr_of_trees):
+    trees = []
+    for i in range(nr_of_trees):
+        trees.append(TreeNode.load_tree("trees/tree_" + str(i)))
+    return trees
+
+
+def get_average_confusion_mat(number_of_trees, mats):
+    # compute average confusion matrix
     confusion_matrix = [[0 for _ in range(number_of_trees)] for _ in range(number_of_trees)]
     for mat in mats:
         for i in range(number_of_trees):
@@ -35,10 +105,16 @@ def main():
 
     for i in range(number_of_trees):
         for j in range(number_of_trees):
-            confusion_matrix[i][j] /= k_folds
+            confusion_matrix[i][j] /= len(mats)
+    return confusion_matrix
 
-    print(confusion_matrix)
-    print(np.mean(percentages))
+
+def get_confusion_mat(predictions, test_data_output, number_of_trees):
+    confusion_mat = [[0 for _ in range(number_of_trees)] for _ in range(number_of_trees)]
+    # get confusion matrix
+    for i in range(len(predictions)):
+        confusion_mat[test_data_output[i] - 1][predictions[i] - 1] += 1
+    return confusion_mat
 
 
 def train_validate(i, x, y, attributes, number_of_trees, k_folds, randomise):
@@ -68,12 +144,9 @@ def train_validate(i, x, y, attributes, number_of_trees, k_folds, randomise):
     trees = train_trees(number_of_trees, attributes[:], training_data_input + validation_data_input, training_data_output + validation_data_output)
     predictions = test_trees(trees, test_data_input, tree_priority, randomise)
 
-    confusion_mat = [[0 for _ in range(number_of_trees)] for _ in range(number_of_trees)]
-    # get confusion matrix
-    for i in range(len(predictions)):
-        confusion_mat[test_data_output[i]-1][predictions[i]-1] += 1
-    
-    return confusion_mat, evaluate_results(predictions, test_data_output)
+    confusion_mat = get_confusion_mat(predictions, test_data_output, number_of_trees)
+
+    return confusion_mat, evaluate_results(predictions, test_data_output), trees
 
 
 def robust_validation(number_of_trees, trees, x, y):
@@ -201,6 +274,7 @@ def same_binary_targets(binary_targets):
         if target != first_target:
             return False
     return True
+
 
 # finds the mode of the vector
 def majority_value(binary_targets):
