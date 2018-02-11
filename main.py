@@ -67,8 +67,8 @@ def main():
 
         confusion_matrix = get_average_confusion_mat(NUMBER_OF_TREES, mats)
         print("Trained Successfully")
-        print("Maximum precision: " + str(max(percentages)))
-        print("Average precision: " + str(np.mean(percentages)))
+        print("Maximum classification rate: " + str(max(percentages)))
+        print("Average classification rate: " + str(np.mean(percentages)))
         print("Confusion matrix: \n" + str(np.matrix(confusion_matrix)))
         print("Average recall: " + str(get_average_recall(confusion_matrix)))
         print("Average precision: " + str(get_average_precision(confusion_matrix)))
@@ -138,9 +138,18 @@ def get_average_confusion_mat(number_of_trees, mats):
 
 def get_confusion_mat(predictions, test_data_output, number_of_trees):
     confusion_mat = [[0 for _ in range(number_of_trees)] for _ in range(number_of_trees)]
+
+    normalisation = [0] * number_of_trees
+
+    for output in test_data_output:
+        normalisation[output - 1] += 1
+
     # get confusion matrix
     for i in range(len(predictions)):
         confusion_mat[test_data_output[i] - 1][predictions[i] - 1] += 1
+
+    for i in range(number_of_trees):
+        confusion_mat[i] = list(map(lambda x: x / normalisation[i], confusion_mat[i]))
     return confusion_mat
 
 
@@ -259,7 +268,7 @@ def get_emotion_val_rand(output):
     return random.choice(trues) + 1
 
 
-# get final output depending on final output and tree_priority
+# choose which tree to use for the input data
 def get_emotion_val(output, tree_priority):
     heights = []
     all_false = True
@@ -273,7 +282,7 @@ def get_emotion_val(output, tree_priority):
     min_height = min(heights)
     counter = collections.Counter(heights)
     if counter[min_height] > 1:
-        # Increase multiple emotion values with same height value
+        # In case multiple emotion values with same height value
         entropy_priorities = []
         for i in range(len(output)):
             if heights[i] == min_height:
