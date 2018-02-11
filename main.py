@@ -68,6 +68,7 @@ def main():
         confusion_matrix = get_average_confusion_mat(NUMBER_OF_TREES, mats)
         print("Trained Successfully")
         print("Maximum precision: " + str(max(percentages)))
+        print("Average precision: " + str(np.mean(percentages)))
         print("Confusion matrix: \n" + str(np.matrix(confusion_matrix)))
         print("Average recall: " + str(get_average_recall(confusion_matrix)))
         print("Average precision: " + str(get_average_precision(confusion_matrix)))
@@ -251,7 +252,7 @@ def get_predictions(trees, test_data, tree_priority, randomise):
 def get_emotion_val_rand(output):
     trues = []
     for i in range(len(output)):
-        if output[i]:
+        if output[i][0]:
             trues.append(i)
     if len(trues) == 0:
         return random.randint(1, len(output))
