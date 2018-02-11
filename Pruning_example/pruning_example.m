@@ -1,8 +1,8 @@
-function pruning_example(x,y)
+function pruning_example()
     
 % x: noSamples x 45 (as returned by loaddata)
 % y: noSamples x 1 (as returned by loaddata)
-
+load('noisydata_students.mat')
 tree = classregtree(x,y,'method','classification','categorical',1:45,'minparent',1,'prune','off');
 
 [cost,s,nodes,bestLevel] = test(tree,'cross',x,y);
