@@ -28,7 +28,7 @@ def get_args():
 
     parser.add_argument("--save", help="Train and save the trees.", action='store_true')
     parser.add_argument("--data", help="What kind of date do you want to use clean or noisy", type=str)
-    parser.add_argument("--dump", help="Train and save the trees.", action='store_true')
+    parser.add_argument("--dump", help="Print the trees.", action='store_true')
     args = parser.parse_args()
     return args
 
@@ -48,6 +48,8 @@ def main():
 
     if args.load:
         trees = load_trees(NUMBER_OF_TREES)
+        pred = testTrees(trees, x)
+        print (evaluate_results(pred, y))
 
     if args.train:
         pool = multiprocessing.Pool(K_FOLDS)
@@ -77,7 +79,6 @@ def main():
     if args.dump:
         for i in range(len(trees)):
             dump_tree(i, trees[i])
-
 
 def choose_best(percentages, trees):
     if not os.path.exists("trees"):
@@ -159,6 +160,63 @@ def shuffle_data(a, b):
     a[:], b[:] = zip(*combined)
     return a, b
 
+#Get predictions with given trees and input data
+#Dependent fucntions- get_predictions(), get_emotion_val_rand(), get_emotion_val()
+def testTrees(T, x2):
+    tree_priority = [0] * NUMBER_OF_TREES
+    return get_predictions(T, x2, tree_priority, False)
+
+# get final predictions given trees and test_data
+def get_predictions(trees, test_data, tree_priority, randomise):
+    number_of_trees = len(trees)
+    final_result = [0] * len(test_data)
+    for i in range(len(test_data)):
+        test_case_output = [(0,0,0)] * number_of_trees
+        for t in range(number_of_trees):
+            output, entropy, height = trees[t].parse_tree(test_data[i], 0)
+            test_case_output[t] = (output, entropy, height)
+        if randomise:
+            final_result[i] = get_emotion_val_rand(test_case_output)
+        else:
+            final_result[i] = get_emotion_val(test_case_output, tree_priority)
+    return final_result
+
+# get final output using random strategy
+def get_emotion_val_rand(output):
+    trues = []
+    for i in range(len(output)):
+        if output[i][0]:
+            trues.append(i)
+    if len(trues) == 0:
+        return random.randint(1, len(output))
+    return random.choice(trues) + 1
+
+
+# choose which tree to use for the input data
+def get_emotion_val(output, tree_priority):
+    heights = []
+    all_false = True
+    for i in range(len(output)):
+        # If tree's output is positive (identifies emotion positively)
+        if output[i][0]:
+            all_false = False
+            heights.append(output[i][2])
+        else:
+            heights.append(-output[i][2] + sys.maxsize)
+    min_height = min(heights)
+    counter = collections.Counter(heights)
+    if counter[min_height] > 1:
+        # In case multiple emotion values with same height value
+        entropy_priorities = []
+        for i in range(len(output)):
+            if heights[i] == min_height:
+                entropy_priorities.append(output[i][1])
+            else:
+                entropy_priorities.append(1 - output[i][1])
+        return entropy_priorities.index(min(entropy_priorities)) + 1
+    else:
+        return heights.index(min_height) + 1
+
 
 def train_test(i, x, y, attributes, number_of_trees, k_folds, randomise):
     test_data_input = []
@@ -239,59 +297,6 @@ def get_perc_accuracy(tree, emotion_val, x, y):
         if (y[i] == emotion_val and output) or (y[i] != emotion_val and (not output)):
             correct += 1
     return correct / len(x)
-
-
-# get final predictions given trees and test_data
-def get_predictions(trees, test_data, tree_priority, randomise):
-    number_of_trees = len(trees)
-    final_result = [0] * len(test_data)
-    for i in range(len(test_data)):
-        test_case_output = [(0,0,0)] * number_of_trees
-        for t in range(number_of_trees):
-            output, entropy, height = trees[t].parse_tree(test_data[i], 0)
-            test_case_output[t] = (output, entropy, height)
-        if randomise:
-            final_result[i] = get_emotion_val_rand(test_case_output)
-        else:
-            final_result[i] = get_emotion_val(test_case_output, tree_priority)
-    return final_result
-
-
-# get final output using random strategy
-def get_emotion_val_rand(output):
-    trues = []
-    for i in range(len(output)):
-        if output[i][0]:
-            trues.append(i)
-    if len(trues) == 0:
-        return random.randint(1, len(output))
-    return random.choice(trues) + 1
-
-
-# choose which tree to use for the input data
-def get_emotion_val(output, tree_priority):
-    heights = []
-    all_false = True
-    for i in range(len(output)):
-        # If tree's output is positive (identifies emotion positively)
-        if output[i][0]:
-            all_false = False
-            heights.append(output[i][2])
-        else:
-            heights.append(-output[i][2] + sys.maxsize)
-    min_height = min(heights)
-    counter = collections.Counter(heights)
-    if counter[min_height] > 1:
-        # In case multiple emotion values with same height value
-        entropy_priorities = []
-        for i in range(len(output)):
-            if heights[i] == min_height:
-                entropy_priorities.append(output[i][1])
-            else:
-                entropy_priorities.append(1 - output[i][1])
-        return entropy_priorities.index(min(entropy_priorities)) + 1
-    else:
-        return heights.index(min_height) + 1
 
 
 def decision_tree_learning(examples, attributes, binary_targets):

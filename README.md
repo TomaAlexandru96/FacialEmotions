@@ -7,4 +7,7 @@ optional arguments:
   --train      Train the trees.
   --save       Train and save the trees.
   --data DATA  What kind of date do you want to use clean or noisy
-  --dump       Train and save the trees.
+  --dump       Print the trees.
+
+  example: python3 main.py --load
+  Loads the trees, test the trees with loaded data and prints accuracy 
